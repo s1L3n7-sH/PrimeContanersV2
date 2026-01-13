@@ -7,53 +7,37 @@ import DressStyleCard from "./DressStyleCard";
 const DressStyle = () => {
   return (
     <div className="px-4 xl:px-0">
-      <section className="max-w-frame mx-auto bg-[#F0F0F0] px-6 pb-6 pt-10 md:p-[70px] rounded-[40px] text-center">
-        <motion.h2
-          initial={{ y: "100px", opacity: 0 }}
-          whileInView={{ y: "0", opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className={cn([
-            integralCF.className,
-            "text-[32px] leading-[36px] md:text-5xl mb-8 md:mb-14 capitalize",
-          ])}
-        >
-          BROWSE BY dress STYLE
-        </motion.h2>
+      <section className="max-w-frame mx-auto  px-6 pb-6 pt-10 md:p-[70px] rounded-[40px] text-center">
         <motion.div
           initial={{ y: "100px", opacity: 0 }}
           whileInView={{ y: "0", opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6, duration: 0.6 }}
-          className="flex flex-col sm:flex-row md:h-[289px] space-y-4 sm:space-y-0 sm:space-x-5 mb-4 sm:mb-5"
+          className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6"
         >
           <DressStyleCard
-            title="Casual"
+            title="Secure & reliable Refrigerated containers"
+            description="Keep perishables fresh with advanced temperature control containers."
             url="/shop#casual"
-            className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/dress-style-1.png')]"
+            className="md:col-span-5 h-[300px] md:h-[500px] bg-[url('/images/base1.jpeg')]"
           />
           <DressStyleCard
-            title="Formal"
+            title="Tailored container solutions Container modifications"
+            description="Customize your container with expert, tailored modification services."
             url="/shop#formal"
-            className="md:max-w-[684px] h-[190px] bg-[url('/images/dress-style-2.png')]"
+            className="md:col-span-7 h-[300px] md:h-[500px] bg-[url('/images/base2.jpg')]"
           />
-        </motion.div>
-        <motion.div
-          initial={{ y: "100px", opacity: 0 }}
-          whileInView={{ y: "0", opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 1, duration: 0.6 }}
-          className="flex flex-col sm:flex-row md:h-[289px] space-y-5 sm:space-y-0 sm:space-x-5"
-        >
           <DressStyleCard
-            title="Party"
+            title="Efficient container transport Container chassis"
+            description="Robust chassis for safe and efficient container transportation."
             url="/shop#party"
-            className="md:max-w-[684px] h-[190px] bg-[url('/images/dress-style-3.png')]"
+            className="md:col-span-7 h-[300px] md:h-[500px] bg-[url('/images/base3.jpg')]"
           />
           <DressStyleCard
-            title="Gym"
+            title="View our work Project gallery"
+            description="Explore our gallery for innovative container solutions, from offices to custom storage."
             url="/shop#gym"
-            className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/dress-style-4.png')]"
+            className="md:col-span-5 h-[300px] md:h-[500px] bg-[url('/images/base4.jpg')]"
           />
         </motion.div>
       </section>

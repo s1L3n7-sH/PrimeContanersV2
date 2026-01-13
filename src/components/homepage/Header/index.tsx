@@ -19,7 +19,7 @@ const Header = () => {
         {/* Darker overlay to ensure text remains readable over video */}
         <div className="absolute inset-0" style={{ backgroundColor: '#202022', opacity: 0.65 }} />
       </div>
-      <div className="md:max-w-frame mx-auto px-4 h-[100vh]">
+      <div className="md:max-w-frame mx-auto px-4 h-[85vh]">
         <section className="max-w-frame px-4 flex flex-col items-center text-center">
           <motion.h2
             initial={{ y: "100px", opacity: 0 }}
@@ -55,9 +55,9 @@ const Header = () => {
               Buy Now
             </Link>
           </motion.div>
-          
+
         </section>
-       
+
       </div>
     </header>
   );

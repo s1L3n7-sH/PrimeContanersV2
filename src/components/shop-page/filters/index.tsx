@@ -1,8 +1,12 @@
 import React from "react";
 import CategoriesSection from "@/components/shop-page/filters/CategoriesSection";
+import ContainerTypeSection from "@/components/shop-page/filters/ContainerTypeSection";
+import ConditionSection from "@/components/shop-page/filters/ConditionSection";
+import HeightSection from "@/components/shop-page/filters/HeightSection";
+import AttributesSection from "@/components/shop-page/filters/AttributesSection";
+import RollUpDoorWidthSection from "@/components/shop-page/filters/RollUpDoorWidthSection";
 import ColorsSection from "@/components/shop-page/filters/ColorsSection";
 import DressStyleSection from "@/components/shop-page/filters/DressStyleSection";
-import PriceSection from "@/components/shop-page/filters/PriceSection";
 import SizeSection from "@/components/shop-page/filters/SizeSection";
 import { Button } from "@/components/ui/button";
 
@@ -12,13 +16,16 @@ const Filters = () => {
       <hr className="border-t-black/10" />
       <CategoriesSection />
       <hr className="border-t-black/10" />
-      <PriceSection />
+      <ContainerTypeSection />
       <hr className="border-t-black/10" />
-      <ColorsSection />
+      <ConditionSection />
       <hr className="border-t-black/10" />
-      <SizeSection />
+      <HeightSection />
       <hr className="border-t-black/10" />
-      <DressStyleSection />
+      <AttributesSection />
+      <hr className="border-t-black/10" />
+      <RollUpDoorWidthSection />
+      <hr className="border-t-black/10" />
       <Button
         type="button"
         className="bg-black w-full rounded-full text-sm font-medium py-4 h-12"

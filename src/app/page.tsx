@@ -1,4 +1,6 @@
 import ProductListSec from "@/components/common/ProductListSec";
+import AboutUs from "@/components/homepage/AboutUs";
+import Quote from "@/components/homepage/Quote";
 import Brands from "@/components/homepage/Brands";
 import DressStyle from "@/components/homepage/DressStyle";
 import Header from "@/components/homepage/Header";
@@ -9,8 +11,8 @@ import { Review } from "@/types/review.types";
 export const newArrivalsData: Product[] = [
   {
     id: 1,
-    title: "T-shirt with Tape Details",
-    srcUrl: "/images/pic1.png",
+    title: "20ft Used Shipping Container",
+    srcUrl: "/images/20stc_01.webp",
     gallery: ["/images/pic1.png", "/images/pic10.png", "/images/pic11.png"],
     price: 120,
     discount: {
@@ -21,8 +23,8 @@ export const newArrivalsData: Product[] = [
   },
   {
     id: 2,
-    title: "Skinny Fit Jeans",
-    srcUrl: "/images/pic2.png",
+    title: "40ft Used Shipping Container",
+    srcUrl: "/images/40stc_01.webp",
     gallery: ["/images/pic2.png"],
     price: 260,
     discount: {
@@ -33,8 +35,8 @@ export const newArrivalsData: Product[] = [
   },
   {
     id: 3,
-    title: "Chechered Shirt",
-    srcUrl: "/images/pic3.png",
+    title: "40ft Used High Cube Shipping Container",
+    srcUrl: "/images/main_14.png.webp",
     gallery: ["/images/pic3.png"],
     price: 180,
     discount: {
@@ -45,8 +47,8 @@ export const newArrivalsData: Product[] = [
   },
   {
     id: 4,
-    title: "Sleeve Striped T-shirt",
-    srcUrl: "/images/pic4.png",
+    title: "45ft Used High Cube Shipping Container",
+    srcUrl: "/images/45hcc_01.webp",
     gallery: ["/images/pic4.png", "/images/pic10.png", "/images/pic11.png"],
     price: 160,
     discount: {
@@ -60,8 +62,8 @@ export const newArrivalsData: Product[] = [
 export const topSellingData: Product[] = [
   {
     id: 5,
-    title: "Vertical Striped Shirt",
-    srcUrl: "/images/pic5.png",
+    title: "40ft 3-Trip High Cube Shipping Container",
+    srcUrl: "/images/main_2.png.webp",
     gallery: ["/images/pic5.png", "/images/pic10.png", "/images/pic11.png"],
     price: 232,
     discount: {
@@ -72,8 +74,8 @@ export const topSellingData: Product[] = [
   },
   {
     id: 6,
-    title: "Courage Graphic T-shirt",
-    srcUrl: "/images/pic6.png",
+    title: "40ft New Shipping Container",
+    srcUrl: "/images/40stn_01.webp",
     gallery: ["/images/pic6.png", "/images/pic10.png", "/images/pic11.png"],
     price: 145,
     discount: {
@@ -84,8 +86,8 @@ export const topSellingData: Product[] = [
   },
   {
     id: 7,
-    title: "Loose Fit Bermuda Shorts",
-    srcUrl: "/images/pic7.png",
+    title: "10ft Refurbished Storage Container with Roll-Up Door",
+    srcUrl: "/images/main.webp",
     gallery: ["/images/pic7.png"],
     price: 80,
     discount: {
@@ -96,8 +98,8 @@ export const topSellingData: Product[] = [
   },
   {
     id: 8,
-    title: "Faded Skinny Jeans",
-    srcUrl: "/images/pic8.png",
+    title: "20ft New High Cube Shipping Container",
+    srcUrl: "/images/20hcn_01.webp",
     gallery: ["/images/pic8.png"],
     price: 210,
     discount: {
@@ -210,9 +212,10 @@ export default function Home() {
     <>
       <Header />
       <Brands />
+      <AboutUs />
       <main className="my-[50px] sm:my-[72px]">
         <ProductListSec
-          title="NEW ARRIVALS"
+          title="Shipping containers for sale"
           data={newArrivalsData}
           viewAllLink="/shop#new-arrivals"
         />
@@ -226,9 +229,11 @@ export default function Home() {
             viewAllLink="/shop#top-selling"
           />
         </div>
+
         <div className="mb-[50px] sm:mb-20">
           <DressStyle />
         </div>
+        <Quote />
         <Reviews data={reviewsData} />
       </main>
     </>
