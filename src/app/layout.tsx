@@ -4,6 +4,7 @@ import { satoshi } from "@/styles/fonts";
 import TopBanner from "@/components/layout/Banner/TopBanner";
 import TopNavbar from "@/components/layout/Navbar/TopNavbar";
 import Footer from "@/components/layout/Footer";
+import HideOnAdmin from "@/components/layout/HideOnAdmin";
 import HolyLoader from "holy-loader";
 import Providers from "./providers";
 
@@ -25,12 +26,18 @@ export default function RootLayout({
     <html lang="en">
       <body className={satoshi.className}>
         <HolyLoader color="#868686" />
-        <TopBanner />
+        <HideOnAdmin>
+          <TopBanner />
+        </HideOnAdmin>
         <Providers>
-          <TopNavbar />
+          <HideOnAdmin>
+            <TopNavbar />
+          </HideOnAdmin>
           {children}
         </Providers>
-        <Footer />
+        <HideOnAdmin>
+          <Footer />
+        </HideOnAdmin>
       </body>
     </html>
   );

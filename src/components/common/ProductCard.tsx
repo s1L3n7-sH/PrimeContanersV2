@@ -14,7 +14,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
         href={`/shop/product/${data.id}/${data.title.split(" ").join("-")}`}
         className="w-full flex flex-col h-full"
       >
-        <div className="bg-[#F0EEED] rounded-[13px] lg:rounded-[20px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden">
+        <div className="bg-[#f4f4f4] rounded-[13px] lg:rounded-[10px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden">
           <Image
             src={data.srcUrl}
             width={295}
@@ -26,7 +26,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
         </div>
         <strong className="text-black text-xl md:text-2xl">{data.title}</strong>
         <div className="w-full mt-auto pt-2">
-          <div className="w-full bg-[#F0F0F0] rounded-full px-4 py-2 text-sm text-black/40">
+          <div className="w-full bg-[#F0F0F0] rounded-md px-4 py-2 text-sm text-black/40 text-center">
             <strong>Enter Zip Code</strong> to see the price
           </div>
         </div>
