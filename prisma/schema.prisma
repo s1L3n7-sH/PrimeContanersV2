@@ -14,11 +14,12 @@ model User {
   name      String?
   role      Role     @default(STAFF)
   isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())  
+  updatedAt    DateTime @updatedAt
+  tokenVersion Int      @default(1)
 }
 
 enum Role {
   ADMIN
-  STAFF
+  STAFF 
 }

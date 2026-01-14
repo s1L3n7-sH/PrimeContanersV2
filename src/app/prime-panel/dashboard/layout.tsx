@@ -2,7 +2,8 @@ import React from "react";
 import Sidebar from "@/components/admin/Sidebar";
 import { User } from "lucide-react";
 import { cookies } from "next/headers";
-import { verifySession } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { verifySessionWithDb } from "@/lib/auth-server";
 
 export default async function DashboardLayout({
     children,
@@ -12,8 +13,18 @@ export default async function DashboardLayout({
     // We can safely assume cookies exist and are valid here because middleware protects this route.
     // However, robust code re-checks or at least parses types properly.
     const cookie = cookies().get('admin_session');
-    const session = cookie ? await verifySession(cookie.value) : null;
+
+    // Check session against DB to ensure it hasn't been revoked
+    const session = cookie ? await verifySessionWithDb(cookie.value) : null;
+
+    if (!session) {
+        // Session is invalid or revoked (e.g. cookie reuse detected).
+        // Redirect to logout handler to clear cookies and send to public portal.
+        redirect('/api/admin-logout');
+    }
+
     const userRole = (session?.role as string) || "STAFF";
+    const userName = (session?.name as string) || "User";
 
     return (
         <div className="min-h-screen bg-gray-50/50">
@@ -27,7 +38,7 @@ export default async function DashboardLayout({
                                 <User className="h-5 w-5" />
                             </div>
                             <span className="text-sm font-medium text-gray-700 hidden md:block">
-                                {userRole}
+                                {userName}
                             </span>
                         </div>
                     </div>

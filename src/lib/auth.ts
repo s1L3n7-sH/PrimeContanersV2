@@ -18,4 +18,5 @@ export type SessionPayload = {
     role: 'ADMIN' | 'STAFF'
     iat: number
     exp: number
+    tokenVersion: number
 }

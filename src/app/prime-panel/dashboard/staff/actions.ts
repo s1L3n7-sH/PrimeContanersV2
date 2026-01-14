@@ -1,14 +1,14 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
-import { verifySession } from '@/lib/auth'
+import { verifySessionWithDb } from '@/lib/auth-server'
 import { cookies } from 'next/headers'
 import * as bcrypt from 'bcryptjs'
 import { revalidatePath } from 'next/cache'
 
 async function requireAdmin() {
     const cookie = cookies().get('admin_session')
-    const session = cookie ? await verifySession(cookie.value) : null
+    const session = cookie ? await verifySessionWithDb(cookie.value) : null
 
     if (!session || session.role !== 'ADMIN') {
         throw new Error('Unauthorized: Admin access required')

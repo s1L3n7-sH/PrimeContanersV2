@@ -35,7 +35,11 @@ export async function login(prevState: any, formData: FormData) {
         // RBAC is handled in middleware and per-route/action.
 
         // Create session
-        const token = await new SignJWT({ userId: user.id, role: user.role })
+        const token = await new SignJWT({
+            userId: user.id,
+            role: user.role,
+            tokenVersion: user.tokenVersion // Include token version for revocation check
+        })
             .setProtectedHeader({ alg: 'HS256' })
             .setExpirationTime('24h')
             .sign(SECRET_KEY)

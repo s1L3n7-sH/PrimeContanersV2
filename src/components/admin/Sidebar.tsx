@@ -68,8 +68,8 @@ export default function Sidebar({ userRole }: { userRole?: string }) {
                 {sidebarItems.map((item) => {
                     // RBAC Logic
                     if (userRole === "STAFF") {
-                        // Staff can ONLY see Orders
-                        if (item.label !== "Orders") return null;
+                        // Staff can see Orders AND Settings
+                        if (item.label !== "Orders" && item.label !== "Settings") return null;
                     }
 
                     if (userRole === "ADMIN") {
