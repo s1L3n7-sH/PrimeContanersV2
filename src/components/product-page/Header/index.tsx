@@ -1,7 +1,7 @@
 import React from "react";
 import PhotoSection from "./PhotoSection";
 import { Product } from "@/types/product.types";
-import { integralCF } from "@/styles/fonts";
+import { satoshi } from "@/styles/fonts";
 import { cn } from "@/lib/utils";
 import Rating from "@/components/ui/Rating";
 import ColorSelection from "./ColorSelection";
@@ -18,8 +18,8 @@ const Header = ({ data }: { data: Product }) => {
         <div>
           <h1
             className={cn([
-              integralCF.className,
-              "text-2xl md:text-[40px] md:leading-[40px] mb-3 md:mb-3.5 capitalize",
+              satoshi.className,
+              "text-2xl md:text-[40px] md:leading-[40px] mb-3 md:mb-3.5 capitalize font-bold",
             ])}
           >
             {data.title}

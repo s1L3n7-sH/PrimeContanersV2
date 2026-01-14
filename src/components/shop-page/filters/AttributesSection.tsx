@@ -45,8 +45,8 @@ const AttributesSection = () => {
                                     className={cn(
                                         "flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 border",
                                         isSelected
-                                            ? "bg-black text-white border-black"
-                                            : "bg-white text-black/60 border-black/10 hover:bg-black/5"
+                                            ? "bg-[#2c2c9c] text-white border-[#2c2c9c]"
+                                            : "bg-white text-black/60 border-black/10 hover:bg-[#2c2c9c]/5"
                                     )}
                                 >
                                     {attribute}

@@ -125,9 +125,9 @@ export const relatedProductData: Product[] = [
   },
   {
     id: 13,
-    title: "Gradient Graphic T-shirt",
-    srcUrl: "/images/pic13.png",
-    gallery: ["/images/pic13.png", "/images/pic10.png", "/images/pic11.png"],
+    title: "20ft Used Open Top Soft Roof Shipping Container",
+    srcUrl: "/images/20stotc_01.webp",
+    gallery: ["/images/20stotc_02.webp", "/images/20stotc_03.webp", "/images/20stotc_04.webp"],
     price: 145,
     discount: {
       amount: 0,
@@ -137,9 +137,9 @@ export const relatedProductData: Product[] = [
   },
   {
     id: 14,
-    title: "Polo with Tipping Details",
-    srcUrl: "/images/pic14.png",
-    gallery: ["/images/pic14.png"],
+    title: "24ft Refurbished Storage Container with Roll-Up Door",
+    srcUrl: "/images/dsc03317_0.png.webp",
+    gallery: ["/images/dsc03317.png.webp", "/images/dsc03327.png.webp", "/images/dsc03285.png.webp"],
     price: 180,
     discount: {
       amount: 0,
@@ -149,9 +149,9 @@ export const relatedProductData: Product[] = [
   },
   {
     id: 15,
-    title: "Black Striped T-shirt",
-    srcUrl: "/images/pic15.png",
-    gallery: ["/images/pic15.png"],
+    title: "30ft Refurbished Storage Container with Roll-Up Door",
+    srcUrl: "/images/img_1814_0.png.webp",
+    gallery: ["/images/img_1814.png.webp", "/images/img_1815.png.webp", "/images/img_1822.png.webp"],
     price: 150,
     discount: {
       amount: 0,
