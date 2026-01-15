@@ -1,5 +1,6 @@
 import React from "react";
 import Sidebar from "@/components/admin/Sidebar";
+import AdminHeader from "@/components/admin/AdminHeader";
 import { User } from "lucide-react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -29,21 +30,9 @@ export default async function DashboardLayout({
     return (
         <div className="min-h-screen bg-gray-50/50">
             <Sidebar userRole={userRole} />
-            <div className="pl-64">
-                <header className="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between sticky top-0 z-40">
-                    <h2 className="text-xl font-semibold text-gray-800">Dashboard</h2>
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer transition-colors">
-                            <div className="h-8 w-8 rounded-full bg-[#2c2c9c]/10 flex items-center justify-center text-[#2c2c9c]">
-                                <User className="h-5 w-5" />
-                            </div>
-                            <span className="text-sm font-medium text-gray-700 hidden md:block">
-                                {userName}
-                            </span>
-                        </div>
-                    </div>
-                </header>
-                <main className="p-8">
+            <div className="pl-0 md:pl-64 transition-all duration-300">
+                <AdminHeader userName={userName} userRole={userRole} />
+                <main className="p-4 md:p-8 overflow-x-hidden">
                     {children}
                 </main>
             </div>

@@ -1,6 +1,4 @@
 import {
-  newArrivalsData,
-  relatedProductData,
   topSellingData,
 } from "@/app/page";
 import ProductListSec from "@/components/common/ProductListSec";
@@ -9,25 +7,59 @@ import Header from "@/components/product-page/Header";
 import Tabs from "@/components/product-page/Tabs";
 import { Product } from "@/types/product.types";
 import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
-const data: Product[] = [
-  ...newArrivalsData,
-  ...topSellingData,
-  ...relatedProductData,
-];
+export const revalidate = 0;
 
-export default function ProductPage({
+export default async function ProductPage({
   params,
 }: {
   params: { slug: string[] };
 }) {
-  const productData = data.find(
-    (product) => product.id === Number(params.slug[0])
-  );
+  const productId = Number(params.slug[0]);
+  let productData: Product | undefined;
+
+  // Try to find in database first
+  try {
+    if (!isNaN(productId)) {
+      const dbProduct = await prisma.product.findUnique({
+        where: { id: productId },
+        include: { images: true }
+      });
+
+      if (dbProduct && dbProduct.inStock) {
+        productData = {
+          id: dbProduct.id,
+          title: dbProduct.title,
+          srcUrl: dbProduct.images[0]?.url || '/images/placeholder.png',
+          gallery: dbProduct.images.length > 0 ? dbProduct.images.map(i => i.url) : [],
+          price: Number(dbProduct.price),
+          discount: {
+            amount: 0,
+            percentage: 0
+          },
+          rating: Number(dbProduct.rating) || 0,
+          description: dbProduct.description
+        };
+      }
+    }
+  } catch (e) {
+    console.error("Error fetching individual product", e);
+  }
+
+  // Fallback to searching in static arrays if not found in DB (legacy support)
+  // Note: newArrivalsData and relatedProductData are no longer exported arrays from page.tsx logic
+  // so we skip searching them to avoid import errors.
+  if (!productData) {
+    productData = topSellingData.find(p => p.id === productId);
+  }
 
   if (!productData?.title) {
     notFound();
   }
+
+  // Related products can just be static or a different DB query
+  const relatedProducts = topSellingData.slice(0, 4);
 
   return (
     <main>
@@ -40,7 +72,7 @@ export default function ProductPage({
         <Tabs />
       </div>
       <div className="mb-[50px] sm:mb-20">
-        <ProductListSec title="You might also like" data={relatedProductData} />
+        <ProductListSec title="You might also like" data={relatedProducts} />
       </div>
     </main>
   );

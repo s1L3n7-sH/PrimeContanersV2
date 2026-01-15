@@ -10,11 +10,15 @@ import DressStyleSection from "@/components/shop-page/filters/DressStyleSection"
 import SizeSection from "@/components/shop-page/filters/SizeSection";
 import { Button } from "@/components/ui/button";
 
-const Filters = () => {
+interface FiltersProps {
+  categories?: string[];
+}
+
+const Filters = ({ categories }: FiltersProps) => {
   return (
     <>
       <hr className="border-t-black/10" />
-      <CategoriesSection />
+      <CategoriesSection categories={categories} />
       <hr className="border-t-black/10" />
       <ContainerTypeSection />
       <hr className="border-t-black/10" />

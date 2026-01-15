@@ -3,19 +3,18 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 
+type CategoriesSectionProps = {
+  categories?: string[];
+};
 
-const categories = [
-  "10 ft",
-  "16 ft",
-  "20 ft",
-  "24 ft",
-  "30 ft",
-  "40 ft",
-  "45 ft",
-];
-
-const CategoriesSection = () => {
+const CategoriesSection = ({ categories = [] }: CategoriesSectionProps) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  // Use passed categories or fallback to defaults if empty/undefined
+  // We filter out null/undefined and empty strings just in case
+  const displayCategories = categories.length > 0
+    ? categories.filter(Boolean)
+    : ["10 ft", "16 ft", "20 ft", "24 ft", "30 ft", "40 ft", "45 ft"];
 
   const toggleCategory = (category: string) => {
     if (selectedCategories.includes(category)) {
@@ -27,7 +26,7 @@ const CategoriesSection = () => {
 
   return (
     <div className="flex flex-wrap gap-2 text-black/60">
-      {categories.map((category) => {
+      {displayCategories.map((category) => {
         const isSelected = selectedCategories.includes(category);
         return (
           <button

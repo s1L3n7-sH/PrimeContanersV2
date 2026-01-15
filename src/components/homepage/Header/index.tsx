@@ -31,7 +31,7 @@ const Header = () => {
               "text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white font-bold mb-6",
             ])}
           >
-            Shipping Container Sales, Rentals & Mods
+            Shipping Container Sales & Mods
           </motion.h2>
           <motion.p
             initial={{ y: "100px", opacity: 0 }}
@@ -52,7 +52,7 @@ const Header = () => {
               href="/shop"
               className="w-full md:w-52 mb-5 md:mb-12 inline-block text-center bg-[#2c2c9c] text-white font-bold hover:bg-[#2c2c9c]/90 transition-all duration-300 font-medium px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 ease-in-out"
             >
-              Buy Now
+              View Containers
             </Link>
           </motion.div>
 

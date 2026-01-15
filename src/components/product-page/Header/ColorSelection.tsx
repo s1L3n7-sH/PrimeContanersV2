@@ -12,15 +12,15 @@ import { IoMdCheckmark } from "react-icons/io";
 
 const colorsData: Color[] = [
   {
-    name: "Brown",
+    name: "Design 1",
     code: "bg-[#4F4631]",
   },
   {
-    name: "Green",
+    name: "Design 2",
     code: "bg-[#314F4A]",
   },
   {
-    name: "Blue",
+    name: "Design 3",
     code: "bg-[#31344F]",
   },
 ];
@@ -34,7 +34,7 @@ const ColorSelection = () => {
   return (
     <div className="flex flex-col">
       <span className="text-sm sm:text-base text-black/60 mb-4">
-        Select Colors
+        Select Door Type
       </span>
       <div className="flex items-center flex-wrap space-x-3 sm:space-x-4">
         {colorsData.map((color, index) => (

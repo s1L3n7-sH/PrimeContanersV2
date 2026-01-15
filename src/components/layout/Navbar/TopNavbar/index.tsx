@@ -12,12 +12,12 @@ import { MenuItem } from "./MenuItem";
 import Image from "next/image";
 import InputGroup from "@/components/ui/input-group";
 import ResTopNavbar from "./ResTopNavbar";
-import CartBtn from "./CartBtn";
+import { Truck } from "lucide-react";
 
 const data: NavMenu = [
   {
     id: 1,
-    label: "Buy",
+    label: "Containers",
     type: "MenuItem",
     url: "/shop",
     children: [],
@@ -25,19 +25,12 @@ const data: NavMenu = [
   {
     id: 2,
     type: "MenuItem",
-    label: "Rent",
-    url: "/shop#on-sale",
-    children: [],
-  },
-  {
-    id: 3,
-    type: "MenuItem",
-    label: "Delivery",
+    label: "Delivery Guidelines",
     url: "/shop#new-arrivals",
     children: [],
   },
   {
-    id: 4,
+    id: 3,
     type: "MenuItem",
     label: "Contact Us",
     url: "/shop#brands",
@@ -113,7 +106,12 @@ const TopNavbar = () => {
               className="max-w-[22px] max-h-[22px]"
             />
           </Link>
-          <CartBtn />
+          <Link
+            href="/#quote"
+            className="flex items-center gap-2 bg-[#2c2c9c] text-white font-bold text-sm md:text-base px-5 py-2.5 rounded-lg shadow-md hover:bg-[#2c2c9c]/90 transition-all duration-300 whitespace-nowrap"
+          >
+            <Truck className="w-4 h-4 md:w-5 md:h-5" /> Get A Quote
+          </Link>
         </div>
       </div>
     </nav>

@@ -7,58 +7,9 @@ import Header from "@/components/homepage/Header";
 import Reviews from "@/components/homepage/Reviews";
 import { Product } from "@/types/product.types";
 import { Review } from "@/types/review.types";
+import { prisma } from "@/lib/prisma";
 
-export const newArrivalsData: Product[] = [
-  {
-    id: 1,
-    title: "20ft Used Shipping Container",
-    srcUrl: "/images/20stc_01.webp",
-    gallery: ["/images/pic1.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 120,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    title: "40ft Used Shipping Container",
-    srcUrl: "/images/40stc_01.webp",
-    gallery: ["/images/pic2.png"],
-    price: 260,
-    discount: {
-      amount: 0,
-      percentage: 20,
-    },
-    rating: 3.5,
-  },
-  {
-    id: 3,
-    title: "40ft Used High Cube Shipping Container",
-    srcUrl: "/images/main_14.png.webp",
-    gallery: ["/images/pic3.png"],
-    price: 180,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.5,
-  },
-  {
-    id: 4,
-    title: "45ft Used High Cube Shipping Container",
-    srcUrl: "/images/45hcc_01.webp",
-    gallery: ["/images/pic4.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 160,
-    discount: {
-      amount: 0,
-      percentage: 30,
-    },
-    rating: 4.5,
-  },
-];
-
+// Keep static data for specific sections if needed, or fallbacks
 export const topSellingData: Product[] = [
   {
     id: 5,
@@ -110,57 +61,6 @@ export const topSellingData: Product[] = [
   },
 ];
 
-export const relatedProductData: Product[] = [
-  {
-    id: 12,
-    title: "Polo with Contrast Trims",
-    srcUrl: "/images/pic12.png",
-    gallery: ["/images/pic12.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 242,
-    discount: {
-      amount: 0,
-      percentage: 20,
-    },
-    rating: 4.0,
-  },
-  {
-    id: 13,
-    title: "20ft Used Open Top Soft Roof Shipping Container",
-    srcUrl: "/images/20stotc_01.webp",
-    gallery: ["/images/20stotc_02.webp", "/images/20stotc_03.webp", "/images/20stotc_04.webp"],
-    price: 145,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 3.5,
-  },
-  {
-    id: 14,
-    title: "24ft Refurbished Storage Container with Roll-Up Door",
-    srcUrl: "/images/dsc03317_0.png.webp",
-    gallery: ["/images/dsc03317.png.webp", "/images/dsc03327.png.webp", "/images/dsc03285.png.webp"],
-    price: 180,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.5,
-  },
-  {
-    id: 15,
-    title: "30ft Refurbished Storage Container with Roll-Up Door",
-    srcUrl: "/images/img_1814_0.png.webp",
-    gallery: ["/images/img_1814.png.webp", "/images/img_1815.png.webp", "/images/img_1822.png.webp"],
-    price: 150,
-    discount: {
-      amount: 0,
-      percentage: 30,
-    },
-    rating: 5.0,
-  },
-];
-
 export const reviewsData: Review[] = [
   {
     id: 1,
@@ -207,21 +107,56 @@ export const reviewsData: Review[] = [
   },
 ];
 
-export default function Home() {
+export const revalidate = 0; // Ensure fresh data on every request
+
+export default async function Home() {
+  // Fetch latest products from DB
+  let dbProducts = [];
+  try {
+    const products = await prisma.product.findMany({
+      take: 8,
+      orderBy: { createdAt: 'desc' },
+      where: { inStock: true },
+      include: { images: true }
+    });
+
+    dbProducts = products.map(p => ({
+      id: p.id,
+      title: p.title,
+      srcUrl: p.images[0]?.url || '/images/placeholder.png', // Fallback image
+      gallery: p.images.map(img => img.url),
+      price: Number(p.price),
+      discount: {
+        amount: 0,
+        percentage: 0
+      },
+      rating: Number(p.rating) || 5
+    }));
+  } catch (e) {
+    console.error("Failed to fetch products for homepage", e);
+  }
+
+  // Fallback to static data if DB is empty (optional, but good for demo if no products added yet)
+  const newArrivals = dbProducts.length > 0 ? dbProducts : [];
+
   return (
     <>
       <Header />
       <Brands />
       <AboutUs />
       <main className="my-[50px] sm:my-[72px]">
-        <ProductListSec
-          title="Shipping containers for sale"
-          data={newArrivalsData}
-          viewAllLink="/shop#new-arrivals"
-        />
+        {newArrivals.length > 0 && (
+          <ProductListSec
+            title="Shipping containers for sale"
+            data={newArrivals}
+            viewAllLink="/shop"
+          />
+        )}
+
         <div className="max-w-frame mx-auto px-4 xl:px-0">
           <hr className="h-[1px] border-t-black/10 my-10 sm:my-16" />
         </div>
+
         <div className="mb-[50px] sm:mb-20">
           <ProductListSec
             title="top selling"
