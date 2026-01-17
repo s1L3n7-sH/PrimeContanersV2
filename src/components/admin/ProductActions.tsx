@@ -1,6 +1,6 @@
 "use client";
 
-import { Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { Pencil, Trash2, Power } from "lucide-react";
 import Link from "next/link";
 import { deleteProduct, toggleProductStock } from "@/actions/product.actions";
 import { useState } from "react";
@@ -15,6 +15,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 interface ProductActionsProps {
     productId: number;
@@ -54,20 +55,24 @@ export default function ProductActions({ productId, initialInStock }: ProductAct
     };
 
     return (
-        <div className="flex items-center justify-end gap-3">
+        <div className="flex items-center justify-end gap-2">
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <button
-                        className="text-gray-400 hover:text-blue-600 transition-colors p-1 disabled:opacity-50"
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className={`h-8 w-8 p-0 ${inStock ? 'text-red-600 hover:text-red-700 hover:bg-red-50' : 'text-green-600 hover:text-green-700 hover:bg-green-50'}`}
                         title={inStock ? "Disable Product (Mark Out of Stock)" : "Enable Product (Mark In Stock)"}
                         disabled={isToggling}
                     >
-                        {inStock ? (
-                            <Eye className="h-4 w-4" />
+                        {isToggling ? (
+                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                        ) : inStock ? (
+                            <Power className="h-4 w-4" />
                         ) : (
-                            <EyeOff className="h-4 w-4 text-gray-500" />
+                            <Power className="h-4 w-4" />
                         )}
-                    </button>
+                    </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -90,21 +95,33 @@ export default function ProductActions({ productId, initialInStock }: ProductAct
 
             <Link
                 href={`/prime-panel/dashboard/products/${productId}`}
-                className="text-gray-400 hover:text-[#2c2c9c] transition-colors p-1"
-                title="Edit Product"
+                passHref
             >
-                <Pencil className="h-4 w-4" />
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                    title="Edit Product"
+                >
+                    <Pencil className="h-4 w-4" />
+                </Button>
             </Link>
 
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <button
-                        disabled={isDeleting}
-                        className="text-gray-400 hover:text-red-600 transition-colors p-1 disabled:opacity-50"
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
                         title="Delete Product"
+                        disabled={isDeleting}
                     >
-                        <Trash2 className="h-4 w-4" />
-                    </button>
+                        {isDeleting ? (
+                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                            <Trash2 className="h-4 w-4" />
+                        )}
+                    </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

@@ -10,6 +10,7 @@ export async function createProduct(formData: FormData) {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const length = formData.get("length") as string;
+    const categoryId = formData.get("categoryId") ? Number(formData.get("categoryId")) : null;
 
     // Basic validation
     if (!title || !description) {
@@ -75,12 +76,13 @@ export async function createProduct(formData: FormData) {
                 title,
                 description,
                 length: length || null,
+                categoryId: categoryId,
                 images: {
                     create: imageUrls.map(url => ({
                         url
                     }))
                 }
-            },
+            } as any,
         });
     } catch (error) {
         console.error("Failed to create product:", error);

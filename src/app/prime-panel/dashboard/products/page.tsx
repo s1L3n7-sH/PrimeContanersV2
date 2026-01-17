@@ -61,7 +61,6 @@ export default async function ProductsPage() {
                                 <tr>
                                     <th className="px-6 py-4">Product</th>
                                     <th className="px-6 py-4">Length</th>
-                                    <th className="px-6 py-4">Images</th>
                                     <th className="px-6 py-4">Status</th>
                                     <th className="px-6 py-4">Date Added</th>
                                     <th className="px-6 py-4 text-right">Actions</th>
@@ -89,11 +88,6 @@ export default async function ProductsPage() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-gray-600">{product.length || '-'}</td>
-                                        <td className="px-6 py-4 text-gray-600">
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                {product.images?.length || 0}
-                                            </span>
-                                        </td>
                                         <td className="px-6 py-4">
                                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${product.inStock ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
                                                 {product.inStock ? 'In Stock' : 'Unavailable'}

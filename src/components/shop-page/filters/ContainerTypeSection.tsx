@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import { getAllCategories } from "@/actions/category.actions";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 import {
@@ -10,22 +11,19 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const containerTypes = [
-    "Refrigerated сontainer",
-    "Bleacher",
-    "Conjoined",
-    "Dry",
-    "Flat rack",
-    "Ground level office",
-    "Hazmat",
-    "Office trailer",
-    "Specialty containers",
-    "Tank",
-    "w/ Roll-Up Doors",
-];
-
 const ContainerTypeSection = () => {
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+    const [containerTypes, setContainerTypes] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const { data } = await getAllCategories();
+            if (data) {
+                setContainerTypes(data);
+            }
+        }
+        fetchCategories();
+    }, [])
 
     const toggleType = (type: string) => {
         if (selectedTypes.includes(type)) {
@@ -43,11 +41,12 @@ const ContainerTypeSection = () => {
                 </AccordionTrigger>
                 <AccordionContent className="pt-4" contentClassName="overflow-visible">
                     <div className="flex flex-wrap gap-2 text-black/60">
-                        {containerTypes.map((type) => {
+                        {containerTypes.filter(c => c.isActive).map((cat) => {
+                            const type = cat.name;
                             const isSelected = selectedTypes.includes(type);
                             return (
                                 <button
-                                    key={type}
+                                    key={cat.id}
                                     onClick={() => toggleType(type)}
                                     className={cn(
                                         "flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 border",

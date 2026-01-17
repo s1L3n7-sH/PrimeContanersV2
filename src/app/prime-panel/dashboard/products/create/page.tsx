@@ -4,7 +4,8 @@ import { createProduct } from "@/actions/product.actions";
 import { ArrowLeft, Save, Upload, Info, X } from "lucide-react";
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getAllCategories } from "@/actions/category.actions";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -35,6 +36,17 @@ export default function CreateProductPage() {
     const [selectedMainIndex, setSelectedMainIndex] = useState(0);
     const [showErrorDialog, setShowErrorDialog] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [categories, setCategories] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetchCategories() {
+            const { data } = await getAllCategories();
+            if (data) {
+                setCategories(data);
+            }
+        }
+        fetchCategories();
+    }, []);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -122,7 +134,30 @@ export default function CreateProductPage() {
                                     className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-4 focus:ring-[#2c2c9c]/10 focus:border-[#2c2c9c] outline-none transition-all"
                                 />
                             </div>
-
+                            <div className="space-y-2">
+                                <label htmlFor="categoryId" className="block text-sm font-semibold text-gray-700">
+                                    Category
+                                </label>
+                                <div className="relative">
+                                    <select
+                                        name="categoryId"
+                                        id="categoryId"
+                                        className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-4 focus:ring-[#2c2c9c]/10 focus:border-[#2c2c9c] outline-none transition-all appearance-none bg-white"
+                                    >
+                                        <option value="">Select a category</option>
+                                        {categories.map((cat) => (
+                                            <option key={cat.id} value={cat.id}>
+                                                {cat.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">
+                                        <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="space-y-2">
                                 <label htmlFor="length" className="block text-sm font-semibold text-gray-700">
                                     Length
@@ -137,6 +172,8 @@ export default function CreateProductPage() {
                                     />
                                 </div>
                             </div>
+
+
                         </div>
 
                         <div className="space-y-2">
@@ -172,7 +209,7 @@ export default function CreateProductPage() {
                             </div>
                             <div className="text-blue-900 text-sm leading-relaxed">
                                 <p className="font-medium mb-1">Image Upload</p>
-                                <p>You can select multiple images at once. These images will be securely stored on the server.</p>
+                                <p>You can select multiple <strong> Landscape</strong> images at once. These images will be securely stored on the server.</p>
                             </div>
                         </div>
 

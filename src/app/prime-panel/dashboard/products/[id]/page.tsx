@@ -57,9 +57,6 @@ export default async function EditProductPage({ params }: { params: { id: string
                             </div>
 
                             <div className="space-y-2">
-                                <label htmlFor="length" className="block text-sm font-semibold text-gray-700">
-                                    Length
-                                </label>
                                 <div className="relative">
                                     <input
                                         type="text"
@@ -69,6 +66,10 @@ export default async function EditProductPage({ params }: { params: { id: string
                                         className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-4 focus:ring-[#2c2c9c]/10 focus:border-[#2c2c9c] outline-none transition-all"
                                     />
                                 </div>
+                                <label htmlFor="length" className="block text-sm font-semibold text-gray-700">
+                                    Length
+                                </label>
+
                             </div>
                         </div>
 
