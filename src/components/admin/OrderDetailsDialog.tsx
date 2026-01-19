@@ -15,21 +15,21 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Eye, Loader2 } from "lucide-react";
-import { Order, OrderItem, Product, ProductImage } from "@prisma/client";
+import { updateOrderStatus, assignOrderToMe, unassignOrder } from "@/actions/admin-orders.actions";
+import { Eye, Loader2, User, UserMinus } from "lucide-react";
 import { SerializedOrder } from "@/lib/types";
 import Image from "next/image";
 import { useState } from "react";
-import { updateOrderStatus } from "@/actions/admin-orders.actions";
 import { useRouter } from "next/navigation";
 
 interface OrderDetailsDialogProps {
     order: SerializedOrder | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    currentUserId: number | null;
 }
 
-export default function OrderDetailsDialog({ order, open, onOpenChange }: OrderDetailsDialogProps) {
+export default function OrderDetailsDialog({ order, open, onOpenChange, currentUserId }: OrderDetailsDialogProps) {
     const [isUpdating, setIsUpdating] = useState(false);
     const router = useRouter();
 
@@ -42,6 +42,30 @@ export default function OrderDetailsDialog({ order, open, onOpenChange }: OrderD
             router.refresh(); // Refresh to show updated data if needed (though Dialog content might not auto-refresh strictly without state, but revalidatePath does the heavy lift)
         } catch (error) {
             console.error("Failed to update status");
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
+    const handleAssign = async () => {
+        setIsUpdating(true);
+        try {
+            await assignOrderToMe(order.id);
+            router.refresh();
+        } catch (error) {
+            console.error("Failed to assign order");
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
+    const handleUnassign = async () => {
+        setIsUpdating(true);
+        try {
+            await unassignOrder(order.id);
+            router.refresh();
+        } catch (error) {
+            console.error("Failed to unassign order");
         } finally {
             setIsUpdating(false);
         }
@@ -83,21 +107,69 @@ export default function OrderDetailsDialog({ order, open, onOpenChange }: OrderD
                     {/* Order Status Management */}
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                         <h3 className="font-semibold text-gray-900 mb-3">Manage Status</h3>
+
+                        {/* Assignment Section */}
+                        <div className="mb-4 pb-4 border-b border-gray-200">
+                            {order.assignedToUserId ? (
+                                <div className="flex items-center justify-between gap-2 text-sm text-gray-700 bg-white p-2 rounded border border-gray-200 w-full">
+                                    <div className="flex items-center gap-2">
+                                        <User className="w-4 h-4 text-[#2c2c9c]" />
+                                        <span>Assigned to: <span className="font-semibold">{order.assignedToName || 'Staff'}</span></span>
+                                    </div>
+                                    {currentUserId === order.assignedToUserId && (
+                                        <Button
+                                            onClick={handleUnassign}
+                                            disabled={isUpdating}
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-7 px-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                        >
+                                            {isUpdating ? <Loader2 className="w-3 h-3 animate-spin" /> : <UserMinus className="w-3 h-3 mr-1" />}
+                                            Unassign
+                                        </Button>
+                                    )}
+                                </div>
+                            ) : (
+                                <Button
+                                    onClick={handleAssign}
+                                    disabled={isUpdating}
+                                    variant="outline"
+                                    className="w-full justify-start text-[#2c2c9c] border-[#2c2c9c] hover:bg-[#2c2c9c] hover:text-white"
+                                >
+                                    {isUpdating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <User className="w-4 h-4 mr-2" />}
+                                    Assign to me
+                                </Button>
+                            )}
+                        </div>
+
                         <div className="space-y-4">
                             <div className="flex items-center gap-2">
                                 <span className="text-sm text-gray-500">Current Status:</span>
                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${order.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                                    order.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                                        order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
-                                            'bg-gray-100 text-gray-800'
+                                    order.status === 'REVIEWED' ? 'bg-blue-100 text-blue-800' :
+                                        order.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
+                                            order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
+                                                (order.status as string) === 'NEW_LEAD' ? 'bg-indigo-100 text-indigo-800' :
+                                                    (order.status as string) === 'HOT_LEAD' ? 'bg-orange-100 text-orange-800' :
+                                                        (order.status as string) === 'NOT_INTERESTED' ? 'bg-gray-100 text-gray-800' :
+                                                            order.status === 'EXPIRED' ? 'bg-slate-100 text-slate-800' :
+                                                                (order.status as string) === 'PAID' ? 'bg-green-100 text-green-800' :
+                                                                    order.status === 'LEAD' ? 'bg-indigo-100 text-indigo-800' :
+                                                                        'bg-gray-100 text-gray-800'
                                     }`}>
-                                    {order.status}
+                                    {(order.status as string) === 'REVIEWED' ? 'PROCESSED' :
+                                        (order.status as string) === 'COMPLETED' ? 'DONE' :
+                                            (order.status as string) === 'NEW_LEAD' ? 'NEW LEAD' :
+                                                (order.status as string) === 'HOT_LEAD' ? 'HOT LEAD' :
+                                                    (order.status as string) === 'NOT_INTERESTED' ? 'NOT INTERESTED' :
+                                                        (order.status as string) === 'PAID' ? 'PAID' :
+                                                            (order.status as string) === 'EXPIRED' ? 'EXPIRED' : order.status}
                                 </span>
                             </div>
 
                             <div className="flex items-center gap-3">
                                 <Select
-                                    disabled={isUpdating}
+                                    disabled={isUpdating || order.assignedToUserId !== currentUserId}
                                     onValueChange={handleStatusChange}
                                     defaultValue={order.status}
                                 >
@@ -105,10 +177,20 @@ export default function OrderDetailsDialog({ order, open, onOpenChange }: OrderD
                                         <SelectValue placeholder="Change Status" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-white">
-                                        <SelectItem value="PENDING">Pending</SelectItem>
-                                        <SelectItem value="REVIEWED">Processed</SelectItem>
-                                        <SelectItem value="COMPLETED">Done</SelectItem>
-                                        <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                                        {(order.status as string) === 'NEW_LEAD' || (order.status as string) === 'HOT_LEAD' || (order.status as string) === 'NOT_INTERESTED' ? (
+                                            <>
+                                                <SelectItem value="HOT_LEAD">Hot Lead</SelectItem>
+                                                <SelectItem value="PAID">Paid</SelectItem>
+                                                <SelectItem value="NOT_INTERESTED">Not Interested</SelectItem>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <SelectItem value="PENDING">Pending</SelectItem>
+                                                <SelectItem value="REVIEWED">Processed</SelectItem>
+                                                <SelectItem value="COMPLETED">Done</SelectItem>
+                                                <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                                            </>
+                                        )}
                                     </SelectContent>
                                 </Select>
                                 {isUpdating && <Loader2 className="w-4 h-4 animate-spin text-[#2c2c9c]" />}
@@ -132,7 +214,6 @@ export default function OrderDetailsDialog({ order, open, onOpenChange }: OrderD
                                 <tr>
                                     <th className="px-4 py-3 text-left w-[80px]">Image</th>
                                     <th className="px-4 py-3 text-left">Product</th>
-                                    <th className="px-4 py-3 text-left">Attributes</th>
                                     <th className="px-4 py-3 text-center">Qty</th>
                                 </tr>
                             </thead>
@@ -159,16 +240,8 @@ export default function OrderDetailsDialog({ order, open, onOpenChange }: OrderD
                                             </td>
                                             <td className="px-4 py-3 font-medium text-gray-900">
                                                 {item.productTitle}
-                                                {item.product && (
-                                                    <div className="text-[10px] text-gray-400">ID: {item.product.id}</div>
-                                                )}
                                             </td>
-                                            <td className="px-4 py-3 text-gray-600">
-                                                {Array.isArray(item.attributes)
-                                                    ? item.attributes.join(", ")
-                                                    : JSON.stringify(item.attributes).replace(/[\[\]"]/g, '').replace(/,/g, ', ')
-                                                }
-                                            </td>
+
                                             <td className="px-4 py-3 text-center text-gray-900 font-medium">
                                                 {item.quantity}
                                             </td>

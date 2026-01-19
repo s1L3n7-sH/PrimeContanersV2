@@ -17,6 +17,7 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   tokenVersion Int      @default(1)
+  assignedOrders Order[]
 }
 
 model Product {
@@ -54,10 +55,13 @@ model Order {
   customerPhone String
   customerZip   String
   status        OrderStatus @default(PENDING)
+  origin        String      @default("Web")
   items         OrderItem[]
   totalAmount   Decimal     @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  assignedToUserId Int?
+  assignedTo       User?       @relation(fields: [assignedToUserId], references: [id])
 }
 
 model OrderItem {
@@ -77,6 +81,12 @@ enum OrderStatus {
   REVIEWED
   COMPLETED
   CANCELLED
+  LEAD
+  EXPIRED
+  NEW_LEAD
+  HOT_LEAD
+  NOT_INTERESTED
+  PAID
 }
 
 model Category {

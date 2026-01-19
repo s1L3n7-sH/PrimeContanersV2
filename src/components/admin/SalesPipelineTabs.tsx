@@ -5,14 +5,11 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const tabs = [
-    { name: "Leads", href: "/prime-panel/dashboard/orders/leads" },
-    { name: "Hot Leads", href: "/prime-panel/dashboard/orders/hot-leads" },
-    { name: "Paid", href: "/prime-panel/dashboard/orders/paid" },
-    { name: "Not Interested", href: "/prime-panel/dashboard/orders/not-interested" },
-    { name: "Expired", href: "/prime-panel/dashboard/orders/expired" },
+    { name: "Leads", href: "/prime-panel/dashboard/sales-pipeline/leads" },
+    { name: "Expired", href: "/prime-panel/dashboard/sales-pipeline/expired" },
 ];
 
-export default function OrdersTabs() {
+export default function SalesPipelineTabs() {
     const pathname = usePathname();
 
     return (

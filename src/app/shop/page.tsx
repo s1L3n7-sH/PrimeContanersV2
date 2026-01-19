@@ -20,11 +20,12 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { prisma } from "@/lib/prisma";
+import { Product } from "@/types/product.types";
 
 export const revalidate = 0;
 
 export default async function ShopPage() {
-  let dbProducts = [];
+  let dbProducts: Product[] = [];
   let categories: string[] = [];
 
   try {

@@ -111,7 +111,7 @@ export const revalidate = 0; // Ensure fresh data on every request
 
 export default async function Home() {
   // Fetch latest products from DB
-  let dbProducts = [];
+  let dbProducts: Product[] = [];
   try {
     const products = await prisma.product.findMany({
       take: 8,

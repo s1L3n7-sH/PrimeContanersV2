@@ -15,4 +15,6 @@ export type SerializedOrderItem = Omit<OrderItem, 'price'> & {
 export type SerializedOrder = Omit<Order, 'totalAmount'> & {
     totalAmount: number;
     items: SerializedOrderItem[];
+    assignedToUserId: number | null;
+    assignedToName: string | null;
 };

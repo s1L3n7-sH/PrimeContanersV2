@@ -14,6 +14,8 @@ import {
     ShoppingBag,
     ChevronDown,
     ChevronRight,
+    Briefcase,
+    MessageCircle,
 } from "lucide-react";
 import { logout } from "@/app/prime-panel/actions";
 import {
@@ -50,9 +52,10 @@ const sidebarItems: SidebarItem[] = [
             { label: "Categories", href: "/prime-panel/dashboard/categories" },
         ],
     },
+
     {
-        icon: ShoppingBag,
-        label: "Orders",
+        icon: Briefcase,
+        label: "Sales Pipeline",
         href: "/prime-panel/dashboard/orders",
     },
     {
@@ -60,6 +63,12 @@ const sidebarItems: SidebarItem[] = [
         label: "Customers",
         href: "/prime-panel/dashboard/customers",
     },
+    {
+        icon: MessageCircle,
+        label: "FB Quote",
+        href: "/prime-panel/dashboard/fb-quote",
+    },
+
     {
         icon: Users, // Using same icon, or could use Shield/UserCog
         label: "Staff",
@@ -125,8 +134,8 @@ export default function SidebarContent({ userRole, onLinkClick }: SidebarContent
                 {sidebarItems.map((item) => {
                     // RBAC Logic
                     if (userRole === "STAFF") {
-                        // Staff can see Orders AND Settings
-                        if (item.label !== "Orders" && item.label !== "Settings") return null;
+                        // Staff can see Sales Pipeline, FB Quote AND Settings
+                        if (item.label !== "Sales Pipeline" && item.label !== "Settings" && item.label !== "FB Quote") return null;
                     }
 
                     if (userRole === "ADMIN") {
