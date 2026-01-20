@@ -23,6 +23,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { motion } from "framer-motion";
+import { Check } from "lucide-react";
 
 export default function OrderPage() {
   const { cart } = useAppSelector((state: RootState) => state.carts);
@@ -41,6 +43,25 @@ export default function OrderPage() {
     setErrorMsg("");
 
     const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMsg("Please enter a valid email address.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Phone validation (numbers only)
+    const phoneRegex = /^\d+$/;
+    if (!phoneRegex.test(phone)) {
+      setErrorMsg("Phone number must contain only numbers.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const cartItemsJson = JSON.stringify(cart.items);
 
     try {
@@ -63,18 +84,44 @@ export default function OrderPage() {
   return (
     <main className="pb-20 relative">
       <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <AlertDialogContent className="bg-white">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-[#2c2c9c]">Quote Requested Successfully!</AlertDialogTitle>
-            <AlertDialogDescription>
-              Thank you for your interest. We have received your quote request and will get back to you shortly with more details.
+        <AlertDialogContent className="bg-white w-[90%] sm:w-full max-w-md rounded-[24px] p-8 border-none shadow-2xl gap-0">
+          <div className="flex flex-col items-center justify-center text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+              }}
+              className="h-24 w-24 bg-[#E8F5E9] rounded-full flex items-center justify-center mb-6"
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Check className="h-12 w-12 text-[#2E7D32]" strokeWidth={3} />
+              </motion.div>
+            </motion.div>
+
+            <AlertDialogTitle className="text-2xl font-bold text-[#1a1a1a] mb-2 text-center">
+              Quote Requested!
+            </AlertDialogTitle>
+
+            <AlertDialogDescription className="text-[#666666] text-base mb-8 text-center max-w-[300px] leading-relaxed">
+              We've received your request. Our team will review the details and get back to you shortly.
             </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={handleSuccessClose} className="bg-[#2c2c9c]">
-              Back to Home
-            </AlertDialogAction>
-          </AlertDialogFooter>
+
+            <AlertDialogFooter className="w-full sm:justify-center">
+              <AlertDialogAction
+                onClick={handleSuccessClose}
+                className="bg-[#2c2c9c] hover:bg-[#1a1a7a] text-white rounded-xl w-full h-[52px] text-base font-medium transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"
+              >
+                Back to Shopping
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
 

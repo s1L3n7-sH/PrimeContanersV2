@@ -208,49 +208,53 @@ export default function OrderDetailsDialog({ order, open, onOpenChange, currentU
                     <div className="bg-gray-50 px-4 py-2 border-b font-medium text-sm text-gray-700">
                         Ordered Items
                     </div>
-                    <div className="max-h-[400px] overflow-y-auto">
-                        <table className="w-full text-sm">
-                            <thead className="bg-white border-b text-xs text-gray-500 uppercase sticky top-0 z-10">
-                                <tr>
-                                    <th className="px-4 py-3 text-left w-[80px]">Image</th>
-                                    <th className="px-4 py-3 text-left">Product</th>
-                                    <th className="px-4 py-3 text-center">Qty</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y">
-                                {order.items.map((item, idx) => {
-                                    // Resolve image URL: try item.product relations first
-                                    const productImages = item.product?.images || [];
-                                    // Use the first image if available, otherwise fallback
-                                    const mainImage = productImages.length > 0 ? productImages[0].url : '/placeholder.png'; // You might want a real placeholder
+                    {order.items.length === 0 ? (
+                        <div className="p-4 text-center text-gray-500 text-sm italic">No Order</div>
+                    ) : (
+                        <div className="max-h-[400px] overflow-y-auto">
+                            <table className="w-full text-sm">
+                                <thead className="bg-white border-b text-xs text-gray-500 uppercase sticky top-0 z-10">
+                                    <tr>
+                                        <th className="px-4 py-3 text-left w-[80px]">Image</th>
+                                        <th className="px-4 py-3 text-left">Product</th>
+                                        <th className="px-4 py-3 text-center">Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y">
+                                    {order.items.map((item, idx) => {
+                                        // Resolve image URL: try item.product relations first
+                                        const productImages = item.product?.images || [];
+                                        // Use the first image if available, otherwise fallback
+                                        const mainImage = productImages.length > 0 ? productImages[0].url : '/placeholder.png'; // You might want a real placeholder
 
-                                    return (
-                                        <tr key={idx} className="bg-white hover:bg-gray-50/50">
-                                            <td className="px-4 py-3">
-                                                <div className="relative w-12 h-12 rounded-md overflow-hidden border border-gray-200 bg-gray-100">
-                                                    {mainImage && (
-                                                        <Image
-                                                            src={mainImage}
-                                                            alt={item.productTitle}
-                                                            fill
-                                                            className="object-cover"
-                                                        />
-                                                    )}
-                                                </div>
-                                            </td>
-                                            <td className="px-4 py-3 font-medium text-gray-900">
-                                                {item.productTitle}
-                                            </td>
+                                        return (
+                                            <tr key={idx} className="bg-white hover:bg-gray-50/50">
+                                                <td className="px-4 py-3">
+                                                    <div className="relative w-12 h-12 rounded-md overflow-hidden border border-gray-200 bg-gray-100">
+                                                        {mainImage && (
+                                                            <Image
+                                                                src={mainImage}
+                                                                alt={item.productTitle}
+                                                                fill
+                                                                className="object-cover"
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="px-4 py-3 font-medium text-gray-900">
+                                                    {item.productTitle}
+                                                </td>
 
-                                            <td className="px-4 py-3 text-center text-gray-900 font-medium">
-                                                {item.quantity}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                                                <td className="px-4 py-3 text-center text-gray-900 font-medium">
+                                                    {item.quantity}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </div>
 
             </DialogContent>

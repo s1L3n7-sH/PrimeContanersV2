@@ -7,20 +7,16 @@ export type SpecItem = {
 
 const specsData: SpecItem[] = [
   {
-    label: " Material composition",
-    value: "100% Cotton",
+    label: "Material",
+    value: "Corrugated Corten Steel",
   },
   {
-    label: "Care instructions",
-    value: "Machine wash warm, tumble dry",
+    label: "Door Type",
+    value: "Standard Double Doors",
   },
   {
-    label: "Fit type",
-    value: "Classic Fit",
-  },
-  {
-    label: "Pattern",
-    value: "Solid",
+    label: "Locking Mechanism",
+    value: "4 Locking Bars with Cam Keepers",
   },
 ];
 

@@ -77,8 +77,9 @@ const Footer = () => {
                 PRIME Containers
               </h1>
               <p className="text-black/60 text-sm mb-9">
-                We have clothes that suits your style and which you’re proud to
-                wear. From women to men.
+                We have containers that suit your storage and shipping needs, built
+                to last and designed for durability. From standard to custom
+                solutions.
               </p>
               <div className="flex items-center">
                 {socialsData.map((social) => (

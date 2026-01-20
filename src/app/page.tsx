@@ -64,44 +64,44 @@ export const topSellingData: Product[] = [
 export const reviewsData: Review[] = [
   {
     id: 1,
-    user: "Alex K.",
+    user: "Robert C.",
     content:
-      '"Finding clothes that align with my personal style used to be a challenge until I discovered PRIME Containers. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions.”',
+      '"I needed a secure storage solution for my construction site, and PRIME Containers delivered exactly what I needed. The 20ft container arrived in excellent condition, and the delivery driver was incredibly professional placing it in a tight spot."',
     rating: 5,
     date: "August 14, 2023",
   },
   {
     id: 2,
     user: "Sarah M.",
-    content: `"I'm blown away by the quality and style of the clothes I received from PRIME Containers. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”`,
+    content: `"We bought a 40ft High Cube for our farm storage. The quality is top-notch, clearly wind and water-tight as advertised. Their team guided us through the whole process, making it super easy. Highly recommend!"`,
     rating: 5,
     date: "August 15, 2023",
   },
   {
     id: 3,
-    user: "Ethan R.",
-    content: `"This t-shirt is a must-have for anyone who appreciates good design. The minimalistic yet stylish pattern caught my eye, and the fit is perfect. I can see the designer's touch in every aspect of this shirt."`,
+    user: "James L.",
+    content: `"Converted a 40ft container into a workshop using PRIME Containers. The structural integrity was perfect for our modification project. Best prices we found after calling five different vendors."`,
     rating: 5,
     date: "August 16, 2023",
   },
   {
     id: 4,
-    user: "Olivia P.",
-    content: `"As a UI/UX enthusiast, I value simplicity and functionality. This t-shirt not only represents those principles but also feels great to wear. It's evident that the designer poured their creativity into making this t-shirt stand out."`,
+    user: "Michael P.",
+    content: `"Reliable service is hard to find in this industry, but PRIME Containers nailed it. Ordered two 20ft containers for our retail inventory overflow. They arrived clean, dry, and ready to use immediately."`,
     rating: 5,
     date: "August 17, 2023",
   },
   {
     id: 5,
-    user: "Liam K.",
-    content: `"This t-shirt is a fusion of comfort and creativity. The fabric is soft, and the design speaks volumes about the designer's skill. It's like wearing a piece of art that reflects my passion for both design and fashion."`,
+    user: "David K.",
+    content: `"I was hesitant about buying a used container online, but the photos sent beforehand matched exactly what arrived. No surprises, just a solid, weather-tight container for my backyard storage needs."`,
     rating: 5,
     date: "August 18, 2023",
   },
   {
     id: 6,
-    user: "Samantha D.",
-    content: `"I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable. As a fellow designer, I appreciate the attention to detail. It's become my favorite go-to shirt."`,
+    user: "Jennifer A.",
+    content: `"Exceptional customer service! They took the time to answer all my questions about site preparation and delivery. The driver dropped the container exactly where we marked it. A+ experience."`,
     rating: 5,
     date: "August 19, 2023",
   },
@@ -157,13 +157,13 @@ export default async function Home() {
           <hr className="h-[1px] border-t-black/10 my-10 sm:my-16" />
         </div>
 
-        <div className="mb-[50px] sm:mb-20">
+        {/* <div className="mb-[50px] sm:mb-20">
           <ProductListSec
             title="top selling"
             data={topSellingData}
             viewAllLink="/shop#top-selling"
           />
-        </div>
+        </div> */}
 
         <div className="mb-[50px] sm:mb-20">
           <DressStyle />

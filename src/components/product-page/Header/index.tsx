@@ -79,10 +79,10 @@ const Header = ({ data }: { data: Product }) => {
           <p className="text-sm sm:text-base text-black/60 mb-5">
             {data.description || "No description available."}
           </p>
-          <hr className="h-[1px] border-t-black/10 mb-5" />
+          {/* <hr className="h-[1px] border-t-black/10 mb-5" />
           <ColorSelection />
           <hr className="h-[1px] border-t-black/10 my-5" />
-          <SizeSelection />
+          <SizeSelection /> */}
           <hr className="hidden md:block h-[1px] border-t-black/10 my-5" />
           <AddToCardSection data={data} />
         </div>
