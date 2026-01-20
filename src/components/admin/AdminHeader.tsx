@@ -2,7 +2,7 @@
 
 import { User, Menu } from "lucide-react";
 import SidebarContent from "./SidebarContent";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useState } from "react";
 
 interface AdminHeaderProps {
@@ -23,6 +23,8 @@ export default function AdminHeader({ userName, userRole }: AdminHeaderProps) {
                         </button>
                     </SheetTrigger>
                     <SheetContent side="left" className="p-0 w-64">
+                        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                        <SheetDescription className="sr-only">Main navigation menu</SheetDescription>
                         <SidebarContent userRole={userRole} onLinkClick={() => setOpen(false)} />
                     </SheetContent>
                 </Sheet>
