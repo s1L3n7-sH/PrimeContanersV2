@@ -223,7 +223,7 @@ export default function CreateProductPage() {
                                     id="images"
                                     multiple
                                     // Remove 'required' here to handle validation manually with dialog
-                                    accept="image/*"
+                                    accept="image/*, .webp"
                                     onChange={handleImageChange}
                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                 />
@@ -233,7 +233,7 @@ export default function CreateProductPage() {
                                     </div>
                                     <div className="space-y-1">
                                         <p className="font-semibold text-gray-900">Click to upload or drag and drop</p>
-                                        <p className="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 10MB)</p>
+                                        <p className="text-sm text-gray-500">SVG, PNG, JPG, GIF or WEBP (max. 10MB)</p>
                                     </div>
                                 </div>
                             </div>
