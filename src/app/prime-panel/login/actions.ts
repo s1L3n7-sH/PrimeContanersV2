@@ -46,8 +46,10 @@ export async function login(prevState: any, formData: FormData) {
 
         cookies().set('admin_session', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            // secure: process.env.NODE_ENV === 'production',
+            // sameSite: 'strict',
+            secure: false, // Changed from production check to false to support non-HTTPS server deployments. Revert to true if SSL is set up.
+            sameSite: 'lax',
             maxAge: 60 * 60 * 24, // 24 hours
             path: '/',
         })
