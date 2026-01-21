@@ -1,6 +1,10 @@
 import { jwtVerify } from 'jose'
 
-export const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET || 'allHailPrimeContainersDabestWork')
+if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined')
+}
+
+export const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET)
 
 export async function verifySession(token: string) {
     try {
