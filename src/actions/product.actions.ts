@@ -12,6 +12,15 @@ export async function createProduct(formData: FormData) {
     const length = formData.get("length") as string;
     const categoryId = formData.get("categoryId") ? Number(formData.get("categoryId")) : null;
 
+    console.log("--- Starting Create Product Action ---");
+    console.log("Received FormData:", {
+        title,
+        description,
+        length,
+        categoryId,
+        imagesCount: formData.getAll("images").length
+    });
+
     // Basic validation
     if (!title || !description) {
         throw new Error("Title and Description are required");
@@ -22,8 +31,11 @@ export async function createProduct(formData: FormData) {
     // 1. Filter out empty file objects (files with 0 size or 'undefined' name)
     const validImageFiles = imageFiles.filter(file => file.size > 0 && file.name !== 'undefined');
 
+    console.log("Valid images to process:", validImageFiles.length);
+
     // 2. Validate at least one image is present
     if (validImageFiles.length === 0) {
+        console.error("No valid images found!");
         throw new Error("At least one product image is required");
     }
 
@@ -56,6 +68,7 @@ export async function createProduct(formData: FormData) {
     }
 
     for (const file of validImageFiles) {
+        console.log(`Processing image: ${file.name} (${file.size} bytes)`);
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
@@ -67,11 +80,12 @@ export async function createProduct(formData: FormData) {
         const filepath = join(uploadDir, filename);
 
         await writeFile(filepath, buffer);
+        console.log(`File written to disk: ${filepath}`);
         imageUrls.push(`/uploads/products/${filename}`);
     }
 
     try {
-        await prisma.product.create({
+        const newProduct = await prisma.product.create({
             data: {
                 title,
                 description,
@@ -84,6 +98,7 @@ export async function createProduct(formData: FormData) {
                 }
             } as any,
         });
+        console.log("Product created in DB with ID:", newProduct.id);
     } catch (error) {
         console.error("Failed to create product:", error);
         throw new Error("Failed to create product");
