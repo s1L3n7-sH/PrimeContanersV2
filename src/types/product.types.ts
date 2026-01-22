@@ -12,4 +12,5 @@ export type Product = {
   discount: Discount;
   rating: number;
   description?: string;
+  inStock?: boolean;
 };

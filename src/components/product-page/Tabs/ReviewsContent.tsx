@@ -43,7 +43,7 @@ const ReviewsContent = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5 sm:mb-9">
         {reviewsData.map((review) => (
-          <ReviewCard key={review.id} data={review} isAction isDate />
+          <ReviewCard key={review.id} data={review} />
         ))}
       </div>
       <div className="w-full px-4 sm:px-0 text-center">
