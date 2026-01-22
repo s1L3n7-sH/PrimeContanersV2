@@ -4,127 +4,112 @@ import React from "react";
 import * as motion from "framer-motion/client";
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
-import { useIsClient, useMediaQuery } from "usehooks-ts";
+import { Quote } from "lucide-react";
+import { useIsClient } from "usehooks-ts";
 import ReviewCard from "@/components/common/ReviewCard";
 import { Review } from "@/types/review.types";
 
 type ReviewsProps = { data: Review[] };
 
 const Reviews = ({ data }: ReviewsProps) => {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const isClient = useIsClient();
-
-  React.useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
 
   if (!isClient) return null;
 
   return (
-    <section className="overflow-hidden">
+    <section className="relative py-20 md:py-32 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 via-transparent to-cyan-50/30 -z-10" />
+
+      {/* Decorative Shapes */}
       <motion.div
-        initial={{ x: "100px", opacity: 0 }}
-        whileInView={{ x: "0", opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <Carousel
-          setApi={setApi}
-          opts={{
-            align: "center",
-            loop: true,
-          }}
-          className="relative w-full mb-6 md:mb-9"
-        >
-          <div className="relative flex items-end sm:items-center max-w-frame mx-auto mb-6 md:mb-10 px-4 xl:px-0">
-            <motion.h2
-              initial={{ y: "100px", opacity: 0 }}
-              whileInView={{ y: "0", opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className={cn([
-                integralCF.className,
-                "text-[32px] leading-[36px] md:text-5xl capitalize mr-auto",
-              ])}
-            >
-              OUR HAPPY CUSTOMERS
-            </motion.h2>
-            <div className="flex items-center space-x-1 ml-2">
-              <CarouselPrevious variant="ghost" className="text-2xl">
-                <FaArrowLeft />
-              </CarouselPrevious>
-              <CarouselNext variant="ghost" className="text-2xl">
-                <FaArrowRight />
-              </CarouselNext>
+        className="absolute top-20 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+        }}
+      />
+
+      <div className="w-full">
+        {/* Header Section */}
+        <div className="max-w-frame mx-auto px-4 xl:px-0">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full mb-4">
+              <Quote className="w-4 h-4" />
+              <span className="text-sm font-bold uppercase tracking-wider">Testimonials</span>
             </div>
+
+            <h2 className={cn([
+              integralCF.className,
+              "text-3xl md:text-5xl lg:text-6xl mb-4 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-800 bg-clip-text text-transparent"
+            ])}>
+              Our Happy Customers
+            </h2>
+
+            <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-2">
+              Hear from clients who trust us to deliver excellence in every container solution
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Continuous Scrolling Carousel */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="w-full py-8 overflow-hidden"
+        >
+          <div className="flex gap-6">
+            {/* First set of cards */}
+            <motion.div
+              className="flex gap-6 flex-shrink-0"
+              animate={{
+                x: [0, `-${100 / 2}%`],
+              }}
+              transition={{
+                x: {
+                  duration: data.length * 120,
+                  repeat: Infinity,
+                  ease: "linear",
+                },
+              }}
+            >
+              {/* Duplicate reviews multiple times for seamless loop */}
+              {[...data, ...data, ...data, ...data, ...data].map((review, index) => (
+                <div
+                  key={`${review.id}-${index}`}
+                  className="w-[350px] md:w-[400px] flex-shrink-0"
+                  onMouseEnter={(e) => {
+                    const motionDiv = e.currentTarget.closest('.flex-shrink-0') as HTMLElement;
+                    if (motionDiv) {
+                      motionDiv.style.animationPlayState = 'paused';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    const motionDiv = e.currentTarget.closest('.flex-shrink-0') as HTMLElement;
+                    if (motionDiv) {
+                      motionDiv.style.animationPlayState = 'running';
+                    }
+                  }}
+                >
+                  <ReviewCard data={review} index={index % data.length} />
+                </div>
+              ))}
+            </motion.div>
           </div>
-          <CarouselContent>
-            {data.map((review, index) => (
-              <CarouselItem
-                key={review.id}
-                className="w-full max-w-[358px] sm:max-w-[400px] pl-5"
-              >
-                <ReviewCard
-                  className="h-full"
-                  data={review}
-                  blurChild={
-                    data.length >= 6 && (
-                      <div
-                        className={cn([
-                          isDesktop
-                            ? (current + 1 === count
-                                ? 0
-                                : current + 1 > count
-                                ? 1
-                                : current + 1) === index &&
-                              "backdrop-blur-[2px]"
-                            : (current === count ? 0 : current) === index &&
-                              "backdrop-blur-[2px]",
-                          isDesktop
-                            ? (current === 1
-                                ? count - 2
-                                : current === 2
-                                ? count - 1
-                                : current - 3) === index &&
-                              "backdrop-blur-[2px]"
-                            : (current === 1
-                                ? count - 1
-                                : current === 2
-                                ? 0
-                                : current - 2) === index &&
-                              "backdrop-blur-[2px]",
-                          "absolute bg-white/10 right-0 top-0 h-full w-full z-10",
-                        ])}
-                      />
-                    )
-                  }
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 };

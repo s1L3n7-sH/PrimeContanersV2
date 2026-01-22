@@ -9,11 +9,11 @@ import {
 import MobileFilters from "@/components/shop-page/filters/MobileFilters";
 import Filters from "@/components/shop-page/filters";
 import { FiSliders } from "react-icons/fi";
+import { Grid3x3, LayoutGrid, SlidersHorizontal } from "lucide-react";
 import ProductCard from "@/components/common/ProductCard";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -21,18 +21,45 @@ import {
 } from "@/components/ui/pagination";
 import { prisma } from "@/lib/prisma";
 import { Product } from "@/types/product.types";
+import ClearAllButton from "@/components/shop-page/filters/ClearAllButton";
 
-export const revalidate = 0;
-
-export default async function ShopPage() {
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ length?: string; minPrice?: string; maxPrice?: string; condition?: string }>;
+}) {
   let dbProducts: Product[] = [];
   let categories: string[] = [];
 
+  // Await searchParams
+  const params = await searchParams;
+
   try {
-    // Fetch Products
+    // Parse filters
+    const selectedLengths = params.length ? params.length.split(',').map(l => l.trim()) : [];
+    const conditions = params.condition ? params.condition.split(',') : [];
+
+    // Build Where Clause
+    const whereClause: any = { inStock: true };
+
+    // Filter by Length
+    if (selectedLengths.length > 0) {
+      whereClause.length = { in: selectedLengths };
+    }
+
+    // Filter by Condition (Search in title or description since no specific field)
+    if (conditions.length > 0) {
+      whereClause.OR = conditions.map(condition => ({
+        OR: [
+          { title: { contains: condition } },
+          { description: { contains: condition } }
+        ]
+      }));
+    }
+
     const products = await prisma.product.findMany({
       orderBy: { createdAt: 'desc' },
-      where: { inStock: true },
+      where: whereClause,
       include: { images: true }
     });
 
@@ -42,14 +69,11 @@ export default async function ShopPage() {
       srcUrl: p.images[0]?.url || '/images/placeholder.png',
       gallery: p.images.map(img => img.url),
       price: Number(p.price),
-      discount: {
-        amount: 0,
-        percentage: 0
-      },
+      discount: { amount: 0, percentage: 0 },
       rating: Number(p.rating) || 0
     }));
 
-    // Fetch Distinct Lengths for Categories
+    // Fetch Distinct Lengths
     const distinctLengths = await prisma.product.findMany({
       select: { length: true },
       distinct: ['length'],
@@ -64,70 +88,128 @@ export default async function ShopPage() {
     console.error("Failed to fetch shop data", e);
   }
 
-  // Use DB products if available
   const productList = dbProducts;
 
   return (
-    <main className="pb-20">
+    <main className="pb-20 bg-gradient-to-b from-white via-blue-50/20 to-white">
       <div className="max-w-frame mx-auto px-4 xl:px-0">
-        <hr className="h-[1px] border-t-black/10 mb-5 sm:mb-6" />
-        <BreadcrumbShop />
-        <div className="flex md:space-x-5 items-start">
-          <div className="hidden md:block min-w-[295px] max-w-[295px] border border-black/10 rounded-[20px] px-5 md:px-6 py-5 space-y-5 md:space-y-6">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-black text-xl">Length</span>
-              <FiSliders className="text-2xl text-black/40" />
-            </div>
-            <Filters categories={categories} />
-          </div>
-          <div className="flex flex-col w-full space-y-5">
-            <div className="flex flex-col lg:flex-row lg:justify-between">
-              <div className="flex items-center justify-between">
-                <h1 className="font-bold text-2xl md:text-[32px]">Storage Container</h1>
-                <MobileFilters />
+        <div className="py-6">
+          <BreadcrumbShop />
+        </div>
+
+        <div className="flex md:gap-8 items-start">
+          {/* Sidebar Filters - Desktop */}
+          <aside className="hidden md:block w-72 flex-shrink-0 sticky top-24">
+            <div className="bg-white border border-blue-100 rounded-3xl p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-bold text-black text-xl flex items-center gap-2">
+                  <SlidersHorizontal className="w-5 h-5 text-blue-600" />
+                  Filters
+                </h2>
+                <ClearAllButton />
               </div>
-              <div className="flex flex-col sm:items-center sm:flex-row">
-                <span className="text-sm md:text-base text-black/60 mr-3">
-                  Showing 1-{productList.length} of {productList.length} Products
-                </span>
-                <div className="flex items-center">
-                  Sort by:{" "}
+
+              <Filters categories={categories} />
+            </div>
+          </aside>
+
+          {/* Products Section */}
+          <div className="flex flex-col w-full space-y-6">
+            <div className="bg-white border border-blue-100 rounded-3xl p-6 shadow-sm">
+              <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h1 className="font-bold text-2xl md:text-3xl bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-1">
+                      Storage Containers
+                    </h1>
+                    <p className="text-sm text-gray-600">
+                      Showing <span className="font-semibold text-gray-900">{productList.length}</span> {productList.length === 1 ? 'product' : 'products'}
+                    </p>
+                  </div>
+                  <MobileFilters categories={categories} />
+                </div>
+
+                <div className="flex items-center gap-3 bg-gray-50 rounded-full px-4 py-2.5 border border-gray-200">
+                  <span className="text-sm font-medium text-gray-700">Sort by:</span>
                   <Select defaultValue="most-popular">
-                    <SelectTrigger className="font-medium text-sm px-1.5 sm:text-base w-fit text-black bg-transparent shadow-none border-none">
+                    <SelectTrigger className="font-semibold text-sm w-fit text-gray-900 bg-transparent shadow-none border-none h-auto p-0">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="most-popular">Most Popular</SelectItem>
-                      <SelectItem value="low-price">Low Price</SelectItem>
-                      <SelectItem value="high-price">High Price</SelectItem>
+                      <SelectItem value="newest">Newest First</SelectItem>
+                      <SelectItem value="low-price">Price: Low to High</SelectItem>
+                      <SelectItem value="high-price">Price: High to Low</SelectItem>
+                      <SelectItem value="rating">Highest Rated</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
             </div>
-            <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-              {productList.map((product) => (
-                <ProductCard key={product.id} data={product} />
+
+            <div className="w-full grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-6">
+              {productList.map((product, index) => (
+                <ProductCard key={product.id} data={product} index={index} />
               ))}
             </div>
-            <hr className="border-t-black/10" />
-            <Pagination className="justify-between">
-              <PaginationPrevious href="#" className="border border-black/10" />
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    className="text-black/50 font-medium text-sm"
-                    isActive
-                  >
-                    1
-                  </PaginationLink>
-                </PaginationItem>
-                {/* Pagination placeholder, would need real pagination logic */}
-              </PaginationContent>
 
-              <PaginationNext href="#" className="border border-black/10" />
-            </Pagination>
+            {/* Pagination... (rest of the file) */}
+            {productList.length > 0 && (
+              <div className="flex justify-center items-center gap-2 py-8">
+                {/* Previous Button */}
+                <button className="group px-5 py-2.5 rounded-full border-2 border-gray-200 hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-600 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">Previous</span>
+                </button>
+
+                {/* Page Numbers */}
+                <div className="flex items-center gap-2">
+                  {/* Active Page */}
+                  <button className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
+                    1
+                  </button>
+
+                  {/* Other Pages */}
+                  <button className="w-10 h-10 rounded-full bg-white border border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-semibold text-sm transition-all duration-300 hover:bg-blue-50 hover:scale-105">
+                    2
+                  </button>
+
+                  <button className="w-10 h-10 rounded-full bg-white border border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-semibold text-sm transition-all duration-300 hover:bg-blue-50 hover:scale-105">
+                    3
+                  </button>
+
+                  {/* Ellipsis */}
+                  <span className="px-2 text-gray-400">...</span>
+
+                  <button className="w-10 h-10 rounded-full bg-white border border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-semibold text-sm transition-all duration-300 hover:bg-blue-50 hover:scale-105">
+                    10
+                  </button>
+                </div>
+
+                {/* Next Button */}
+                <button className="group px-5 py-2.5 rounded-full border-2 border-gray-200 hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2">
+                  <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">Next</span>
+                  <svg className="w-4 h-4 text-gray-600 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {productList.length === 0 && (
+              <div className="bg-white border border-blue-100 rounded-3xl p-12 text-center shadow-sm">
+                <div className="max-w-md mx-auto">
+                  <Grid3x3 className="w-16 h-16 text-blue-200 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">No Products Found</h3>
+                  <p className="text-gray-600">
+                    We couldn't find any containers matching your criteria. Try adjusting your filters.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

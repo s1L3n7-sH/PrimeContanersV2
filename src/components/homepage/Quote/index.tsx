@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { submitGeneralQuote } from "@/actions/order.actions";
-import { Check, Loader2 } from "lucide-react";
+import { Check, Loader2, Mail, Phone, User, MapPin } from "lucide-react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -60,9 +60,40 @@ const Quote = () => {
     };
 
     return (
-        <section id="quote" className="bg-[#e9eef5] py-12 md:py-20 scroll-mt-28 relative">
+        <section id="quote" className="relative py-16 md:py-24 scroll-mt-28 overflow-hidden">
+            {/* Enhanced gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-cyan-50 to-sky-50 -z-10" />
+            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] -z-10" />
+
+            {/* Animated background shapes */}
+            <motion.div
+                className="absolute top-10 right-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"
+                animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.5, 0.3],
+                }}
+                transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                }}
+            />
+            <motion.div
+                className="absolute bottom-10 left-10 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl"
+                animate={{
+                    scale: [1, 1.3, 1],
+                    opacity: [0.3, 0.5, 0.3],
+                }}
+                transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 2,
+                }}
+            />
+
             <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-                <AlertDialogContent className="bg-white w-[90%] sm:w-full max-w-md rounded-[24px] p-8 border-none shadow-2xl gap-0">
+                <AlertDialogContent className="bg-white w-[90%] sm:w-full max-w-md rounded-3xl p-8 border-none shadow-2xl gap-0">
                     <div className="flex flex-col items-center justify-center text-center">
                         <motion.div
                             initial={{ scale: 0 }}
@@ -72,29 +103,29 @@ const Quote = () => {
                                 stiffness: 260,
                                 damping: 20,
                             }}
-                            className="h-24 w-24 bg-[#E8F5E9] rounded-full flex items-center justify-center mb-6"
+                            className="h-24 w-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-lg"
                         >
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.5 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.2 }}
                             >
-                                <Check className="h-12 w-12 text-[#2E7D32]" strokeWidth={3} />
+                                <Check className="h-12 w-12 text-white" strokeWidth={3} />
                             </motion.div>
                         </motion.div>
 
-                        <AlertDialogTitle className="text-2xl font-bold text-[#1a1a1a] mb-2 text-center">
+                        <AlertDialogTitle className="text-2xl font-bold text-gray-900 mb-2 text-center">
                             Quote Requested!
                         </AlertDialogTitle>
 
-                        <AlertDialogDescription className="text-[#666666] text-base mb-8 text-center max-w-[300px] leading-relaxed">
+                        <AlertDialogDescription className="text-gray-600 text-base mb-8 text-center max-w-[300px] leading-relaxed">
                             We've received your request. Our team will review the details and get back to you shortly.
                         </AlertDialogDescription>
 
                         <AlertDialogFooter className="w-full sm:justify-center">
                             <AlertDialogAction
                                 onClick={() => setShowSuccessDialog(false)}
-                                className="bg-[#2c2c9c] hover:bg-[#1a1a7a] text-white rounded-xl w-full h-[52px] text-base font-medium transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"
+                                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-xl w-full h-[52px] text-base font-medium transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"
                             >
                                 Close
                             </AlertDialogAction>
@@ -103,23 +134,26 @@ const Quote = () => {
                 </AlertDialogContent>
             </AlertDialog>
 
-            <div className="max-w-xl mx-auto px-4 xl:px-0">
+            <div className="max-w-2xl mx-auto px-4 xl:px-0 relative z-10">
                 <motion.div
                     initial={{ y: 50, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="text-center mb-10"
+                    className="text-center mb-12"
                 >
+                    <div className="inline-block mb-4">
+                        <span className="text-blue-600 font-bold text-sm uppercase tracking-wider">Get Started Today</span>
+                    </div>
                     <h2
                         className={cn([
                             integralCF.className,
-                            "text-[32px] md:text-5xl mb-4 capitalize leading-tight",
+                            "text-[36px] md:text-5xl mb-4 capitalize leading-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent",
                         ])}
                     >
                         Get A Quote
                     </h2>
-                    <p className="text-black/60 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+                    <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-xl mx-auto">
                         Ready to get started? Fill out the form below and we'll get back to you with a customized quote tailored to your needs.
                     </p>
                 </motion.div>
@@ -129,73 +163,99 @@ const Quote = () => {
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="bg-white p-6 md:p-10 rounded-[14px] shadow-sm border border-black/10"
+                    className="relative"
                 >
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                        <div className="w-full space-y-2">
-                            <label htmlFor="name" className="text-sm font-medium pl-1">Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                placeholder="Full Name"
-                                className="w-full px-4 py-3 rounded-[10px] bg-[#F0F0F0] border border-black/10 focus:border-black/10 focus:bg-white focus:ring-2 focus:ring-[#2c2c9c] transition-all text-sm outline-none"
-                                required
-                            />
-                        </div>
-                        <div className="w-full space-y-2">
-                            <label htmlFor="email" className="text-sm font-medium pl-1">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="Email Address"
-                                className="w-full px-4 py-3 rounded-[10px] bg-[#F0F0F0] border border-black/10 focus:border-black/10 focus:bg-white focus:ring-2 focus:ring-[#2c2c9c] transition-all text-sm outline-none"
-                                required
-                            />
-                        </div>
-                        <div className="w-full space-y-2">
-                            <label htmlFor="phone" className="text-sm font-medium pl-1">Phone</label>
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                placeholder="Phone Number"
-                                className="w-full px-4 py-3 rounded-[10px] bg-[#F0F0F0] border border-black/10 focus:border-black/10 focus:bg-white focus:ring-2 focus:ring-[#2c2c9c] transition-all text-sm outline-none"
-                                required
-                            />
-                        </div>
-                        <div className="w-full space-y-2">
-                            <label htmlFor="zip" className="text-sm font-medium pl-1">Zip Code</label>
-                            <input
-                                type="text"
-                                id="zip"
-                                name="zip"
-                                placeholder="00000"
-                                className="w-full px-4 py-3 rounded-[10px] bg-[#F0F0F0] border border-black/10 focus:border-black/10 focus:bg-white focus:ring-2 focus:ring-[#2c2c9c] transition-all text-sm outline-none"
-                                required
-                            />
-                        </div>
+                    {/* Card background with glassmorphism */}
+                    <div className="absolute inset-0 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl" />
 
-                        {errorMsg && (
-                            <p className="text-red-500 text-sm mt-1">{errorMsg}</p>
-                        )}
+                    <div className="relative p-8 md:p-10">
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                            <div className="w-full space-y-2">
+                                <label htmlFor="name" className="text-sm font-semibold text-gray-700 pl-1">Full Name</label>
+                                <div className="relative group">
+                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        placeholder="Full Name"
+                                        className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white transition-all text-sm outline-none"
+                                        required
+                                    />
+                                </div>
+                            </div>
 
-                        <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full rounded-[10px] bg-[#2c2c9c] h-[46px] text-base font-medium mt-2 shadow-md hover:shadow-xl hover:bg-[#1a1a7a] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Submitting...
-                                </>
-                            ) : (
-                                "Get Quote"
+                            <div className="w-full space-y-2">
+                                <label htmlFor="email" className="text-sm font-semibold text-gray-700 pl-1">Email Address</label>
+                                <div className="relative group">
+                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="Email Address"
+                                        className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white transition-all text-sm outline-none"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="w-full space-y-2">
+                                <label htmlFor="phone" className="text-sm font-semibold text-gray-700 pl-1">Phone Number</label>
+                                <div className="relative group">
+                                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="1234567890"
+                                        className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white transition-all text-sm outline-none"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="w-full space-y-2">
+                                <label htmlFor="zip" className="text-sm font-semibold text-gray-700 pl-1">Zip Code</label>
+                                <div className="relative group">
+                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                                    <input
+                                        type="text"
+                                        id="zip"
+                                        name="zip"
+                                        placeholder="00000"
+                                        className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white transition-all text-sm outline-none"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            {errorMsg && (
+                                <motion.p
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="text-red-500 text-sm bg-red-50 border border-red-200 rounded-lg p-3"
+                                >
+                                    {errorMsg}
+                                </motion.p>
                             )}
-                        </Button>
-                    </form>
+
+                            <Button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 h-14 text-base font-semibold mt-2 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                            >
+                                {isSubmitting ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                        Submitting...
+                                    </>
+                                ) : (
+                                    "Get Your Free Quote"
+                                )}
+                            </Button>
+                        </form>
+                    </div>
                 </motion.div>
             </div>
         </section>
@@ -203,3 +263,4 @@ const Quote = () => {
 };
 
 export default Quote;
+

@@ -3,56 +3,78 @@
 import { Product } from "@/types/product.types";
 import Image from "next/image";
 import React, { useState } from "react";
+import * as motion from "framer-motion/client";
+import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 
 const PhotoSection = ({ data }: { data: Product }) => {
   const [selected, setSelected] = useState<string>(data.srcUrl);
-  const [emblaRef] = useEmblaCarousel({ dragFree: true, containScroll: "trimSnaps" });
-
+  const [emblaRef] = useEmblaCarousel({
+    dragFree: true,
+    containScroll: "trimSnaps",
+    align: "start"
+  });
 
   return (
-    <div className="flex flex-col space-y-2">
-      <div className="flex items-center justify-center bg-white rounded-[13px] sm:rounded-[10px] w-full sm:w-96 md:w-full mx-auto overflow-hidden">
+    <div className="flex flex-col space-y-4">
+      {/* Main Image Container */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative group w-full aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-blue-100 shadow-lg"
+      >
+        <div className="absolute inset-0 bg-blue-50/30 group-hover:bg-transparent transition-colors duration-300" />
         <Image
           src={selected}
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="rounded-md w-full h-auto hover:scale-110 transition-all duration-500"
           alt={data.title}
+          fill
+          className="object-contain p-4 group-hover:scale-105 transition-transform duration-700 ease-out"
           priority
-          unoptimized
-          style={{ width: '100%', height: 'auto' }}
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
-      </div>
 
+        {/* Decorative badge */}
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-blue-100">
+          <span className="text-xs font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent uppercase tracking-wider">
+            Premium View
+          </span>
+        </div>
+      </motion.div>
+
+      {/* Thumbnails Carousel */}
       {data?.gallery && data.gallery.length > 0 && (
-        <div className="w-full overflow-hidden" ref={emblaRef}>
-          <div className="flex space-x-2 touch-pan-y">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="w-full overflow-hidden"
+          ref={emblaRef}
+        >
+          <div className="flex gap-3 py-2 px-1">
             {data.gallery.map((photo, index) => (
               <button
                 key={index}
                 type="button"
-                className="bg-white rounded-[13px] xl:rounded-[10px] h-[80px] xl:h-[90px] overflow-hidden shrink-0 border border-black/10 flex-[0_0_auto]"
-                onClick={() => {
-                  setSelected(photo);
-                }}
+                onClick={() => setSelected(photo)}
+                className={cn(
+                  "relative flex-[0_0_35%] sm:flex-[0_0_25%] aspect-[16/10] rounded-xl overflow-hidden border transition-all duration-300",
+                  selected === photo
+                    ? "border-black/20 opacity-100 shadow-md ring-1 ring-black/5"
+                    : "border-transparent opacity-60 hover:opacity-100 bg-gray-50"
+                )}
               >
                 <Image
                   src={photo}
-                  width={0}
-                  height={0}
-                  sizes="150px"
-                  className="rounded-md w-auto h-full hover:scale-110 transition-all duration-500"
-                  alt={data.title}
-                  priority
-                  unoptimized
-                  style={{ width: 'auto', height: '100%' }}
+                  alt={`${data.title} thumb ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="200px"
                 />
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );

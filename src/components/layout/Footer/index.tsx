@@ -1,140 +1,150 @@
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 import React from "react";
-import { PaymentBadge, SocialNetworks } from "./footer.types";
-import { FaFacebookF, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTwitter, FaLinkedinIn } from "react-icons/fa";
+import { Mail, Phone, MapPin } from "lucide-react";
 import Link from "next/link";
 import LinksSection from "./LinksSection";
-import Image from "next/image";
 import NewsLetterSection from "./NewsLetterSection";
-import LayoutSpacing from "./LayoutSpacing";
+import * as motion from "framer-motion/client";
 
-const socialsData: SocialNetworks[] = [
-  {
-    id: 1,
-    icon: <FaTwitter />,
-    url: "https://twitter.com",
-  },
-  {
-    id: 2,
-    icon: <FaFacebookF />,
-    url: "https://facebook.com",
-  },
-  {
-    id: 3,
-    icon: <FaInstagram />,
-    url: "https://instagram.com",
-  },
-  {
-    id: 4,
-    icon: <FaGithub />,
-    url: "https://github.com/mohammadoftadeh",
-  },
-];
-
-const paymentBadgesData: PaymentBadge[] = [
-  {
-    id: 1,
-    srcUrl: "/icons/Visa.svg",
-  },
-  {
-    id: 2,
-    srcUrl: "/icons/mastercard.svg",
-  },
-  {
-    id: 3,
-    srcUrl: "/icons/paypal.svg",
-  },
-  {
-    id: 4,
-    srcUrl: "/icons/applePay.svg",
-  },
-  {
-    id: 5,
-    srcUrl: "/icons/googlePay.svg",
-  },
+const socialsData = [
+  { id: 1, icon: <FaTwitter />, url: "https://twitter.com", label: "Twitter" },
+  { id: 2, icon: <FaFacebookF />, url: "https://facebook.com", label: "Facebook" },
+  { id: 3, icon: <FaInstagram />, url: "https://instagram.com", label: "Instagram" },
+  { id: 4, icon: <FaLinkedinIn />, url: "https://linkedin.com", label: "LinkedIn" },
 ];
 
 const Footer = () => {
   return (
-    <footer className="mt-10">
-      <div className="relative">
-        <div className="absolute bottom-0 w-full h-1/2 bg-[#F0F0F0]"></div>
-        <div className="px-4">
-          <NewsLetterSection />
-        </div>
+    <footer className="relative mt-20 bg-gradient-to-b from-white via-blue-50/30 to-white">
+      {/* Newsletter Section */}
+      <div className="relative px-4 mb-16">
+        <NewsLetterSection />
       </div>
-      <div className="pt-8 md:pt-[50px] bg-[#F0F0F0] px-4 pb-4">
-        <div className="max-w-frame mx-auto">
-          <nav className="lg:grid lg:grid-cols-12 mb-8">
-            <div className="flex flex-col lg:col-span-3 lg:max-w-[248px]">
-              <h1
-                className={cn([
-                  integralCF.className,
-                  "text-[28px] lg:text-[32px] mb-6",
-                ])}
-              >
+
+      {/* Decorative Elements */}
+      <motion.div
+        className="absolute top-20 right-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+        }}
+      />
+
+      {/* Main Footer */}
+      <div className="max-w-frame mx-auto px-4 xl:px-0 pt-12 pb-8">
+        {/* Top Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-12">
+          {/* Brand Column */}
+          <div className="lg:col-span-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className={cn([
+                integralCF.className,
+                "text-3xl lg:text-4xl mb-4 bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent"
+              ])}>
                 PRIME Containers
-              </h1>
-              <p className="text-black/60 text-sm mb-9">
-                We have containers that suit your storage and shipping needs, built
-                to last and designed for durability. From standard to custom
-                solutions.
+              </h2>
+              <p className="text-gray-600 text-sm leading-relaxed mb-6 max-w-sm">
+                We have containers that suit your storage and shipping needs, built to last and designed for durability. From standard to custom solutions.
               </p>
-              <div className="flex items-center">
+
+              {/* Contact Info */}
+              <div className="space-y-3 mb-6">
+                <a href="tel:+1234567890" className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors group">
+                  <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <span className="text-sm font-medium">(123) 456-7890</span>
+                </a>
+                <a href="mailto:info@primecontainers.com" className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors group">
+                  <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <span className="text-sm font-medium">info@primecontainers.org</span>
+                </a>
+                <div className="flex items-start gap-3 text-gray-700">
+                  <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-4 h-4" />
+                  </div>
+                  <span className="text-sm font-medium">123 Container St, Shipping City, SC 12345</span>
+                </div>
+              </div>
+
+              {/* Social Media */}
+              <div className="flex items-center gap-3">
                 {socialsData.map((social) => (
-                  <Link
-                    href={social.url}
+                  <motion.a
                     key={social.id}
-                    className="bg-white hover:bg-black hover:text-white transition-all mr-3 w-7 h-7 rounded-full border border-black/20 flex items-center justify-center p-1.5"
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-white border-2 border-blue-200 hover:border-blue-600 hover:bg-blue-600 transition-all flex items-center justify-center text-blue-600 hover:text-white shadow-sm"
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    aria-label={social.label}
                   >
                     {social.icon}
-                  </Link>
+                  </motion.a>
                 ))}
               </div>
-            </div>
-            <div className="hidden lg:grid col-span-9 lg:grid-cols-4 lg:pl-10">
-              <LinksSection />
-            </div>
-            <div className="grid lg:hidden grid-cols-2 sm:grid-cols-4">
-              <LinksSection />
-            </div>
-          </nav>
+            </motion.div>
+          </div>
 
-          <hr className="h-[1px] border-t-black/10 mb-6" />
-          <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center mb-2">
-            <p className="text-sm text-center sm:text-left text-black/60 mb-4 sm:mb-0 sm:mr-1">
-              PRIME Containers © Made by{" "}
-              <Link
-                href="https://github.com/mohammadoftadeh"
-                className="text-black font-medium"
-              >
-                Rafy Suarez
-              </Link>
-            </p>
-            <div className="flex items-center">
-              {paymentBadgesData.map((badge, _, arr) => (
-                <span
-                  key={badge.id}
-                  className={cn([
-                    arr.length !== badge.id && "mr-3",
-                    "w-[46px] h-[30px] rounded-[5px] border-[#D6DCE5] bg-white flex items-center justify-center",
-                  ])}
-                >
-                  <Image
-                    priority
-                    src={badge.srcUrl}
-                    width={33}
-                    height={100}
-                    alt="user"
-                    className="max-h-[15px]"
-                  />
-                </span>
-              ))}
-            </div>
+          {/* Links Columns */}
+          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
+            <LinksSection />
           </div>
         </div>
-        <LayoutSpacing />
+
+        {/* Divider */}
+        <div className="relative w-full mb-8">
+          <div className="w-full h-px bg-gray-200" />
+          <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50" />
+        </div>
+
+        {/* Bottom Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <motion.p
+            className="text-sm text-gray-600 text-center md:text-left"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            © 2026 Prime Containers. All rights reserved. Made by{" "}
+            <Link
+              href="#"
+              target="_blank"
+              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+            >
+              Raffy Suarez
+            </Link>
+          </motion.p>
+
+          <motion.div
+            className="flex items-center gap-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <Link href="/privacy" className="text-sm text-gray-600 hover:text-blue-600 transition-colors font-medium">
+              Privacy Policy
+            </Link>
+            <span className="text-gray-300">•</span>
+            <Link href="/terms" className="text-sm text-gray-600 hover:text-blue-600 transition-colors font-medium">
+              Terms of Service
+            </Link>
+          </motion.div>
+        </div>
       </div>
     </footer>
   );

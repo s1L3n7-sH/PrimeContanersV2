@@ -47,7 +47,7 @@ const AddToCartBtn = ({ data }: { data: Product & { quantity: number } }) => {
   return (
     <>
       <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent className="bg-white w-[90%] sm:w-full max-w-sm rounded-[24px] p-8 border-none shadow-2xl gap-0">
+        <AlertDialogContent className="bg-white w-[90%] sm:w-full max-w-sm rounded-[32px] p-8 border border-blue-100 shadow-2xl gap-0">
           <AlertDialogHeader className="flex flex-col items-center justify-center text-center">
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
@@ -57,32 +57,38 @@ const AddToCartBtn = ({ data }: { data: Product & { quantity: number } }) => {
                 stiffness: 260,
                 damping: 20,
               }}
-              className="h-16 w-16 rounded-full bg-[#eef2ff] flex items-center justify-center mb-6"
+              className="h-20 w-20 rounded-full bg-blue-50 flex items-center justify-center mb-6 shadow-inner"
             >
-              <Loader2 className="h-8 w-8 text-[#2c2c9c] animate-spin" />
+              <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
             </motion.div>
-            <AlertDialogTitle className="text-xl font-bold text-[#1a1a1a] mb-2">
-              Requesting Quote
+            <AlertDialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-3">
+              Initializing Quote
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-[#666666] text-sm/relaxed mb-6 leading-relaxed">
-              We're preparing your quote details. Please complete the form on the next page to verify your identity.
+            <AlertDialogDescription className="text-gray-500 text-base mb-8 max-w-[260px] mx-auto leading-relaxed">
+              We're preparing your quote details. Redirecting you to the verification step...
             </AlertDialogDescription>
-            <div className="flex items-center space-x-2 text-xs font-medium text-[#2c2c9c]">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2c2c9c] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2c2c9c]"></span>
-              </span>
-              <p>Redirecting you in a few seconds...</p>
+
+            <div className="w-full bg-blue-50 rounded-full h-1.5 overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-blue-600 to-cyan-500"
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 2.5, ease: "easeInOut" }}
+              />
             </div>
           </AlertDialogHeader>
         </AlertDialogContent>
       </AlertDialog>
       <button
         type="button"
-        className="bg-[#2c2c9c] w-full ml-3 sm:ml-5 rounded-[12px] h-11 md:h-[52px] text-sm sm:text-base text-white hover:bg-[#1a1a7a] transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
+        className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 w-full ml-4 rounded-full h-14 text-base font-bold text-white hover:shadow-lg hover:shadow-blue-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group border border-transparent hover:border-blue-300/30"
         onClick={handleAddToCart}
       >
-        Get a Quote of this product
+        <span>Request Quote</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-80 group-hover:translate-x-1 transition-transform">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
       </button>
     </>
   );
