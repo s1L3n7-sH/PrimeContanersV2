@@ -150,27 +150,71 @@ export default function CareerPage() {
             return;
         }
 
+        // Additional client-side file size check
+        const maxSizeInMB = 5;
+        const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+        if (formState.resume.size > maxSizeInBytes) {
+            setMessage({
+                type: "error",
+                text: `File size (${(formState.resume.size / 1024 / 1024).toFixed(2)} MB) exceeds the maximum allowed size of ${maxSizeInMB} MB. Please upload a smaller file.`
+            });
+            return;
+        }
+
         setIsSubmitting(true);
         setMessage(null);
 
-        const formData = new FormData();
-        formData.append("fullName", formState.fullName);
-        formData.append("email", formState.email);
-        formData.append("phone", formState.phone);
-        formData.append("resume", formState.resume);
+        try {
+            const formData = new FormData();
+            formData.append("fullName", formState.fullName);
+            formData.append("email", formState.email);
+            formData.append("phone", formState.phone);
+            formData.append("resume", formState.resume);
 
-        const result = await submitCareerApplication(formData);
+            const result = await submitCareerApplication(formData);
 
-        if (result.success) {
-            setMessage({ type: "success", text: result.message || "Application submitted successfully!" });
-            setFormState({ fullName: "", email: "", phone: "", resume: null });
-            const fileInput = document.getElementById("resume") as HTMLInputElement;
-            if (fileInput) fileInput.value = "";
-        } else {
-            setMessage({ type: "error", text: result.error || "Failed to submit application" });
+            // Check if result exists and has expected structure
+            if (!result) {
+                setMessage({
+                    type: "error",
+                    text: "Server error: No response received. Please try again or contact support."
+                });
+                setIsSubmitting(false);
+                return;
+            }
+
+            if (result.success) {
+                setMessage({ type: "success", text: result.message || "Application submitted successfully!" });
+                setFormState({ fullName: "", email: "", phone: "", resume: null });
+                const fileInput = document.getElementById("resume") as HTMLInputElement;
+                if (fileInput) fileInput.value = "";
+            } else {
+                // Provide specific error messages
+                let errorMessage = result.error || "Failed to submit application";
+
+                // Handle common error cases
+                if (errorMessage.includes("413") || errorMessage.toLowerCase().includes("too large")) {
+                    errorMessage = "Your file is too large for the server to process. Please reduce the file size and try again (maximum 2-3 MB recommended).";
+                }
+
+                setMessage({ type: "error", text: errorMessage });
+            }
+        } catch (error: any) {
+            console.error("Submission error:", error);
+
+            // Handle network or server errors
+            let errorMessage = "An unexpected error occurred. Please try again.";
+
+            if (error?.message?.includes("413") || error?.status === 413) {
+                errorMessage = "File size exceeds server limit. Please upload a smaller PDF (2-3 MB recommended).";
+            } else if (error?.message?.includes("network") || error?.message?.includes("fetch")) {
+                errorMessage = "Network error. Please check your connection and try again.";
+            }
+
+            setMessage({ type: "error", text: errorMessage });
+        } finally {
+            setIsSubmitting(false);
         }
-
-        setIsSubmitting(false);
     };
 
     const benefits = [
@@ -206,9 +250,6 @@ export default function CareerPage() {
 
             {/* Hero Section */}
             <div className="relative z-10">
-                {/* Background Image Overlay - Only visible above form */}
-                <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10" style={{ backgroundImage: "url('/images/career-bg.jpg')" }} />
-
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -434,7 +475,7 @@ export default function CareerPage() {
                                         >
                                             <Upload className="w-4 h-4 text-blue-600" />
                                             Resume / CV
-                                            <span className="text-xs text-gray-500 font-normal">(PDF only, max 5MB)</span>
+                                            <span className="text-xs text-red-600 font-medium">(PDF only, max 2-3MB recommended)</span>
                                         </Label>
 
                                         <motion.div
