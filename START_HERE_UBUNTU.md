@@ -3,11 +3,12 @@
 ## What You Have Now
 
 ✅ 413 error is **FIXED** (Nginx configured)  
-❌ Getting "Failed to submit application"  
+⚠️ Getting "Failed to submit application"  
+⚠️ Database error: CareerApplication table doesn't exist
 
 ---
 
-## 🎯 Solution in 3 Steps
+## 🎯 Solution in 4 Steps
 
 ### Step 1: Pull & Deploy (on Ubuntu server)
 
@@ -16,14 +17,23 @@ cd ~/PrimeContanersV2
 git pull origin main
 ```
 
-### Step 2: Fix Permissions (on Ubuntu server)
+### Step 2: Sync Database Schema (on Ubuntu server)
+
+```bash
+chmod +x sync-database-ubuntu.sh
+./sync-database-ubuntu.sh
+```
+
+This creates the `CareerApplication` table in your database.
+
+### Step 3: Fix Permissions (on Ubuntu server)
 
 ```bash
 chmod +x fix-permissions-ubuntu.sh
 ./fix-permissions-ubuntu.sh
 ```
 
-### Step 3: Rebuild & Restart (on Ubuntu server)
+### Step 4: Rebuild & Restart (on Ubuntu server)
 
 ```bash
 npm run build

@@ -276,10 +276,9 @@ export default function CareersPage() {
                                                     <TableCell className="text-right">
                                                         <div className="flex items-center justify-end gap-2">
                                                             <a
-                                                                href={application.resumeUrl}
+                                                                href={`/api/download-resume/${application.resumeUrl.split('/').pop()}`}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
-                                                                download
                                                             >
                                                                 <Button
                                                                     variant="outline"
