@@ -38,7 +38,15 @@ const data: NavMenu = [
     url: "/shop#brands",
     children: [],
   },
+  {
+    id: 4,
+    type: "MenuItem",
+    label: "Career",
+    url: "/career",
+    children: [],
+  },
 ];
+
 
 const TopNavbar = () => {
   const [scrolled, setScrolled] = useState(false);

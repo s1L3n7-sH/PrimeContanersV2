@@ -68,7 +68,11 @@ const sidebarItems: SidebarItem[] = [
         label: "FB Quote",
         href: "/prime-panel/dashboard/fb-quote",
     },
-
+    {
+        icon: Briefcase,
+        label: "Careers",
+        href: "/prime-panel/dashboard/careers",
+    },
     {
         icon: Users, // Using same icon, or could use Shield/UserCog
         label: "Staff",
@@ -80,6 +84,7 @@ const sidebarItems: SidebarItem[] = [
         href: "/prime-panel/dashboard/settings",
     },
 ];
+
 
 interface SidebarContentProps {
     userRole?: string;
