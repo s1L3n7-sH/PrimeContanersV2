@@ -41,3 +41,6 @@ fix_admin.ts
 
 # Large binaries
 *.exe
+
+# Uploaded files (user data - should not be in git)
+/public/uploads/

@@ -116,10 +116,16 @@ export async function submitCareerApplication(formData: FormData) {
 
         // Create uploads directory if it doesn't exist
         const uploadsDir = path.join(process.cwd(), "public", "uploads", "resumes");
+
         try {
             await fs.mkdir(uploadsDir, { recursive: true });
-        } catch (error) {
-            // Directory might already exist
+            console.log(`✓ Uploads directory ready: ${uploadsDir}`);
+        } catch (mkdirError: any) {
+            console.error("Failed to create uploads directory:", mkdirError);
+            return {
+                success: false,
+                error: `Failed to create uploads directory: ${mkdirError.message}. Please check server permissions.`
+            };
         }
 
         // Generate safe filename with timestamp
@@ -133,32 +139,82 @@ export async function submitCareerApplication(formData: FormData) {
         const filepath = path.join(uploadsDir, finalFilename);
 
         // Save file with validated buffer
-        await fs.writeFile(filepath, buffer);
+        try {
+            await fs.writeFile(filepath, buffer);
+            console.log(`✓ File saved: ${filepath}`);
+        } catch (writeError: any) {
+            console.error("Failed to write file:", writeError);
+            return {
+                success: false,
+                error: `Failed to save file: ${writeError.message}. Please check server permissions.`
+            };
+        }
 
         // Verify file was written correctly
-        const stats = await fs.stat(filepath);
-        if (stats.size !== buffer.length) {
-            // Cleanup failed upload
-            await fs.unlink(filepath);
-            return { success: false, error: "File upload verification failed" };
+        try {
+            const stats = await fs.stat(filepath);
+            if (stats.size !== buffer.length) {
+                // Cleanup failed upload
+                await fs.unlink(filepath);
+                console.error(`File size mismatch: expected ${buffer.length}, got ${stats.size}`);
+                return { success: false, error: "File upload verification failed" };
+            }
+            console.log(`✓ File verified: ${stats.size} bytes`);
+        } catch (statError: any) {
+            console.error("Failed to verify file:", statError);
+            return {
+                success: false,
+                error: `Failed to verify file: ${statError.message}`
+            };
         }
 
         // Save to database
         const resumeUrl = `/uploads/resumes/${finalFilename}`;
-        await prisma.careerApplication.create({
-            data: {
-                fullName,
-                email,
-                phone,
-                resumeUrl,
-            },
-        });
+        try {
+            await prisma.careerApplication.create({
+                data: {
+                    fullName,
+                    email,
+                    phone,
+                    resumeUrl,
+                },
+            });
+            console.log(`✓ Database record created for ${email}`);
+        } catch (dbError: any) {
+            console.error("Failed to save to database:", dbError);
+
+            // Cleanup uploaded file since DB save failed
+            try {
+                await fs.unlink(filepath);
+                console.log(`✓ Cleaned up file after DB error: ${filepath}`);
+            } catch (unlinkError) {
+                console.error("Failed to cleanup file:", unlinkError);
+            }
+
+            return {
+                success: false,
+                error: `Database error: ${dbError.message}. Please try again or contact support.`
+            };
+        }
 
         revalidatePath("/prime-panel/dashboard/careers");
 
+        console.log(`✓✓✓ Application submitted successfully for ${email}`);
         return { success: true, message: "Application submitted successfully!" };
-    } catch (error) {
-        console.error("Error submitting career application:", error);
-        return { success: false, error: "Failed to submit application" };
+
+    } catch (error: any) {
+        console.error("=== CAREER APPLICATION ERROR ===");
+        console.error("Error type:", error?.constructor?.name);
+        console.error("Error message:", error?.message);
+        console.error("Error stack:", error?.stack);
+        console.error("================================");
+
+        // Provide more specific error message
+        let errorMessage = "Failed to submit application";
+        if (error?.message) {
+            errorMessage += `: ${error.message}`;
+        }
+
+        return { success: false, error: errorMessage };
     }
 }
