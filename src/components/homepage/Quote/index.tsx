@@ -145,12 +145,10 @@ const Quote = () => {
                     <div className="inline-block mb-4">
                         <span className="text-blue-600 font-bold text-sm uppercase tracking-wider">Get Started Today</span>
                     </div>
-                    <h2
-                        className={cn([
-                            integralCF.className,
-                            "text-[36px] md:text-5xl mb-4 capitalize leading-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent",
-                        ])}
-                    >
+                    <h2 className={cn([
+                        integralCF.className,
+                        "text-3xl md:text-5xl lg:text-6xl mb-4 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-800 bg-clip-text text-transparent"
+                    ])}>
                         Get A Quote
                     </h2>
                     <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-xl mx-auto">

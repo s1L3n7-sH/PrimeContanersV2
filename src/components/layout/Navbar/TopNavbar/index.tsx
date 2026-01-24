@@ -27,19 +27,26 @@ const data: NavMenu = [
   {
     id: 2,
     type: "MenuItem",
+    label: "Rental",
+    url: "/rental",
+    children: [],
+  },
+  {
+    id: 3,
+    type: "MenuItem",
     label: "Delivery",
     url: "/shop#new-arrivals",
     children: [],
   },
   {
-    id: 3,
+    id: 4,
     type: "MenuItem",
     label: "Contact",
     url: "/shop#brands",
     children: [],
   },
   {
-    id: 4,
+    id: 5,
     type: "MenuItem",
     label: "Career",
     url: "/career",

@@ -200,12 +200,12 @@ const AboutUs = () => {
                 className="mb-16"
             >
                 <div className="text-center mb-12">
-                    <h3 className={cn([
+                    <h2 className={cn([
                         integralCF.className,
-                        "text-3xl md:text-4xl mb-4 text-gray-900"
+                        "text-3xl md:text-5xl lg:text-6xl mb-4 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-800 bg-clip-text text-transparent"
                     ])}>
                         Why Choose Prime Containers
-                    </h3>
+                    </h2>
                     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                         We deliver excellence through every container, combining quality craftsmanship with exceptional service
                     </p>

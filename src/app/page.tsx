@@ -1,4 +1,5 @@
 import ProductListSec from "@/components/common/ProductListSec";
+import TeamSection from "@/components/homepage/TeamSection";
 import AboutUs from "@/components/homepage/AboutUs";
 import Quote from "@/components/homepage/Quote";
 import Brands from "@/components/homepage/Brands";
@@ -165,9 +166,13 @@ export default async function Home() {
           />
         </div> */}
 
+
         <div className="mb-[50px] sm:mb-20">
           <DressStyle />
         </div>
+
+        <TeamSection />
+
         <Quote />
         <Reviews data={reviewsData} />
       </main>
