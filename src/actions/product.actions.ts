@@ -151,27 +151,166 @@ export async function updateProduct(id: number, formData: FormData) {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const length = formData.get("length") as string;
+    const categoryId = formData.get("categoryId") ? Number(formData.get("categoryId")) : null;
+    const deletedImageIdsJson = formData.get("deletedImageIds") as string;
+
+    let deletedImageIds: number[] = [];
+    try {
+        if (deletedImageIdsJson) {
+            deletedImageIds = JSON.parse(deletedImageIdsJson);
+        }
+    } catch (e) {
+        console.error("Failed to parse deletedImageIds", e);
+    }
 
     if (!title || !description) {
         throw new Error("Title and Description are required");
     }
 
     try {
-        await prisma.product.update({
-            where: { id },
-            data: {
-                title,
-                description,
-                length: length || null,
-            },
+        // 1. Handle Deleted Images
+        if (deletedImageIds.length > 0) {
+            // Fetch images to get URLs for deletion
+            const imagesToDelete = await prisma.productImage.findMany({
+                where: {
+                    id: { in: deletedImageIds },
+                    productId: id
+                }
+            });
+
+            // Delete from FS
+            for (const img of imagesToDelete) {
+                if (img.url.startsWith("/uploads/")) {
+                    const filePath = join(process.cwd(), "public", img.url);
+                    try {
+                        await unlink(filePath);
+                    } catch (e) {
+                        console.error(`Failed to delete file: ${filePath}`, e);
+                    }
+                }
+            }
+
+            // Delete from DB
+            await prisma.productImage.deleteMany({
+                where: {
+                    id: { in: deletedImageIds },
+                    productId: id
+                }
+            });
+        }
+
+        // 2. Handle New Image Uploads
+        const imageFiles = formData.getAll("images") as File[];
+        const validImageFiles = imageFiles.filter(file => file.size > 0 && file.name !== 'undefined');
+        const newImageUrls: string[] = [];
+
+        if (validImageFiles.length > 0) {
+            const uploadDir = join(process.cwd(), "public/uploads/products");
+            try {
+                await mkdir(uploadDir, { recursive: true });
+            } catch (e) {
+                // Ignore if exists
+            }
+
+            for (const file of validImageFiles) {
+                if (!file.type.startsWith("image/")) continue;
+
+                const bytes = await file.arrayBuffer();
+                const buffer = Buffer.from(bytes);
+                const safeName = file.name.replace(/[^a-zA-Z0-9.]/g, '-');
+                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                const filename = `${uniqueSuffix}-${safeName}`;
+                const filepath = join(uploadDir, filename);
+
+                await writeFile(filepath, buffer);
+                newImageUrls.push(`/uploads/products/${filename}`);
+            }
+        }
+
+        // 3. Handle Reordering / Main Image Logic
+        const mainImageId = formData.get("mainImageId") ? Number(formData.get("mainImageId")) : null;
+        const newMainIndex = formData.get("newMainIndex") ? Number(formData.get("newMainIndex")) : null;
+
+        // Fetch current images (after deletions)
+        const currentImages = await prisma.productImage.findMany({
+            where: { productId: id },
+            orderBy: { id: 'asc' }
         });
+
+        // 3a. Prepare list of all image URLs in desired order
+        let orderedUrls: string[] = [];
+
+        // Helper to find URL
+        let mainImageUrl: string | null = null;
+        const otherExistingUrls: string[] = [];
+
+        // Distribute existing images
+        for (const img of currentImages) {
+            if (mainImageId && img.id === mainImageId) {
+                mainImageUrl = img.url;
+            } else {
+                otherExistingUrls.push(img.url);
+            }
+        }
+
+        // Distribute new images
+        let mainNewImageUrl: string | null = null;
+        const otherNewUrls: string[] = [];
+
+        newImageUrls.forEach((url, idx) => {
+            if (newMainIndex !== null && idx === newMainIndex) {
+                mainNewImageUrl = url;
+            } else {
+                otherNewUrls.push(url);
+            }
+        });
+
+        // Construct final list
+        // Order: [Main Image] -> [Other Existing] -> [Other New]
+        if (mainImageUrl) {
+            orderedUrls.push(mainImageUrl);
+        } else if (mainNewImageUrl) {
+            orderedUrls.push(mainNewImageUrl);
+        }
+
+        // Add others
+        orderedUrls = [...orderedUrls, ...otherExistingUrls, ...otherNewUrls];
+
+        // 4. Update Product
+        // We need to re-create images to ensure order (Main is first)
+        // Transaction to ensure atomicity
+        await prisma.$transaction(async (tx) => {
+            // Delete all existing images links (not files)
+            await tx.productImage.deleteMany({
+                where: { productId: id }
+            });
+
+            // Update product details
+            await tx.product.update({
+                where: { id },
+                data: {
+                    title,
+                    description,
+                    length: length || null,
+                    categoryId: categoryId,
+                    // Re-insert images in order
+                    images: {
+                        create: orderedUrls.map(url => ({
+                            url
+                        }))
+                    }
+                },
+            });
+        });
+
     } catch (error) {
         console.error("Failed to update product:", error);
         throw new Error("Failed to update product");
     }
 
     revalidatePath("/prime-panel/dashboard/products");
-    revalidatePath("/shop"); // Update shop page
+    revalidatePath("/shop");
+    revalidatePath(`/shop/product/${id}`);
     redirect("/prime-panel/dashboard/products");
 }
 
