@@ -30,7 +30,7 @@ const Header = () => {
 
   const features = [
     { icon: Shield, text: "Wind & Water-Tight Guarantee" },
-    { icon: TrendingUp, text: "30,000+ Satisfied Customers" },
+    { icon: TrendingUp, text: "Thousands of Satisfied Customers" },
     { icon: Star, text: "Industry-Leading Quality" },
   ];
 
@@ -165,7 +165,7 @@ const Header = () => {
                 className="group inline-flex items-center justify-center gap-3 bg-white/10 backdrop-blur-md border-2 border-white/30 hover:bg-white/20 text-white font-bold text-base sm:text-lg px-8 py-4 rounded-xl transition-all duration-300"
               >
                 <Phone className="w-5 h-5" />
-                <span>(123) 456-7890</span>
+                <span>(614)491-8402</span>
               </a>
             </motion.div>
 

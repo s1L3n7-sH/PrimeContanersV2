@@ -8,9 +8,9 @@ const TopBanner = () => {
     <div className="bg-black text-white text-center py-2 px-2 sm:px-4 xl:px-0">
       <div className="relative max-w-frame mx-auto">
         <p className="text-xs sm:text-sm">
-          Get 20% off to your first order.{" "}
-          <Link href="#" className="underline font-medium">
-            Buy Now
+          Limited-Time Discount  {" "}
+          <Link href="/shop" className="underline font-medium">
+            Get your Quote!
           </Link>
         </p>
         <Button

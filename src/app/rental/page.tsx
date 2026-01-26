@@ -87,7 +87,7 @@ const PricingCard = ({
         <div className="relative p-8 overflow-hidden h-48 flex items-center justify-center">
             {/* Background Image */}
             <Image
-                src="/images/rentalbackgroundtest.jpg"
+                src="/images/backgroundrental.webp"
                 alt="Container"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -141,7 +141,7 @@ export default function RentalPage() {
             <div className="relative -mt-24 mb-16 h-[400px] flex items-center justify-center overflow-hidden">
                 {/* Background Image */}
                 <Image
-                    src="/images/rentalbackgroundtest.jpg"
+                    src="/images/backgroundrental.webp"
                     alt="Container Yard"
                     fill
                     className="object-cover"
@@ -241,7 +241,7 @@ export default function RentalPage() {
                                 </div>
                                 <div className="mt-8">
                                     <a
-                                        href="mailto:info@primecontainers.com?subject=Container Rental Inquiry"
+                                        href="mailto:contact@primecontainers.org?subject=Container Rental Inquiry"
                                         className="inline-flex items-center justify-center px-8 py-3 text-base font-bold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                     >
                                         Inquire via Email

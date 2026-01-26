@@ -13,7 +13,7 @@ import { SlidersHorizontal, X } from "lucide-react";
 import Filters from ".";
 import ClearAllButton from "./ClearAllButton";
 
-const MobileFilters = ({ categories }: { categories?: string[] }) => {
+const MobileFilters = ({ categories, productCategories }: { categories?: string[]; productCategories?: string[] }) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -45,7 +45,7 @@ const MobileFilters = ({ categories }: { categories?: string[] }) => {
         </DrawerHeader>
 
         <div className="flex-1 overflow-y-auto px-6 py-6">
-          <Filters categories={categories} />
+          <Filters categories={categories} productCategories={productCategories} />
         </div>
 
         <DrawerFooter className="border-t border-gray-100 pt-4">

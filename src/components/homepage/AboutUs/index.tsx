@@ -37,7 +37,7 @@ const AboutUs = () => {
         {
             icon: Award,
             title: "Industry Leading",
-            description: "Over 30,000 satisfied customers trust us for quality containers and exceptional service."
+            description: "Over thousands satisfied customers trust us for quality containers and exceptional service."
         },
     ];
 
@@ -47,7 +47,7 @@ const AboutUs = () => {
         "Flexible Financing Options",
         "Expert Installation Support",
         "Nationwide Delivery Network",
-        "24/7 Customer Service"
+        "Excellent Customer Service"
     ];
 
     return (
@@ -157,7 +157,7 @@ const AboutUs = () => {
                     transition={{ duration: 0.7, delay: 0.2 }}
                 >
                     <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                        Engineering Excellence Since 2009
+                        Engineering Excellence Since 2016
                     </h3>
                     <p className="text-gray-600 text-lg leading-relaxed mb-6">
                         At Prime Containers, we believe that a container is more than just a steel box—it's
@@ -265,7 +265,7 @@ const AboutUs = () => {
                             href="tel:+1234567890"
                             className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/20 transition-all duration-300 whitespace-nowrap"
                         >
-                            📞 (123) 456-7890
+                            📞 (614)491-8402
                         </a>
                     </div>
                 </div>

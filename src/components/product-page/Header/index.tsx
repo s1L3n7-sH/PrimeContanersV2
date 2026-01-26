@@ -65,7 +65,7 @@ const Header = ({ data }: { data: Product }) => {
                 <Package className="w-4 h-4 text-blue-600" />
                 Description
               </h3>
-              <p className="text-gray-600 leading-relaxed text-base">
+              <p className="text-gray-600 leading-relaxed text-base whitespace-pre-line">
                 {data.description || "This premium container offers a robust solution for your storage needs. Built with high-grade steel and designed for durability, it's perfect for both personal and commercial use."}
               </p>
             </div>

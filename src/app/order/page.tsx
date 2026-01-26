@@ -208,7 +208,7 @@ export default function OrderPage() {
                           id="phone"
                           required
                           className="w-full p-3.5 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder:text-gray-400"
-                          placeholder="(123) 456-7890"
+                          placeholder="(614)491-8402"
                         />
                       </div>
                       <div className="space-y-2">

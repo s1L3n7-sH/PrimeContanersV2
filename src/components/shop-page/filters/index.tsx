@@ -5,9 +5,10 @@ import { LayoutGrid } from "lucide-react";
 
 interface FiltersProps {
   categories?: string[];
+  productCategories?: string[];
 }
 
-const Filters = ({ categories }: FiltersProps) => {
+const Filters = ({ categories, productCategories }: FiltersProps) => {
   return (
     <div className="space-y-6">
       {/* Categories (Length) */}
@@ -21,8 +22,8 @@ const Filters = ({ categories }: FiltersProps) => {
 
       <div className="h-px bg-gray-100" />
 
-      {/* Condition Filter */}
-      <ConditionSection />
+      {/* Condition (Product Category) Filter */}
+      <ConditionSection categories={productCategories} />
     </div>
   );
 };

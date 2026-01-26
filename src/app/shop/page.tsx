@@ -21,15 +21,17 @@ import {
 } from "@/components/ui/pagination";
 import { prisma } from "@/lib/prisma";
 import { Product } from "@/types/product.types";
+import { Category } from "@prisma/client";
 import ClearAllButton from "@/components/shop-page/filters/ClearAllButton";
 
 export default async function ShopPage({
   searchParams,
 }: {
-  searchParams: Promise<{ length?: string; minPrice?: string; maxPrice?: string; condition?: string }>;
+  searchParams: Promise<{ length?: string; minPrice?: string; maxPrice?: string; condition?: string; category?: string }>;
 }) {
   let dbProducts: Product[] = [];
-  let categories: string[] = [];
+  let lengths: string[] = []; // Renamed from categories to lengths for clarity
+  let productCategories: string[] = [];
 
   // Await searchParams
   const params = await searchParams;
@@ -37,7 +39,8 @@ export default async function ShopPage({
   try {
     // Parse filters
     const selectedLengths = params.length ? params.length.split(',').map(l => l.trim()) : [];
-    const conditions = params.condition ? params.condition.split(',') : [];
+    // Condition param is legacy or can be recycled, but user requested category
+    const selectedCategories = params.category ? params.category.split(',') : [];
 
     // Build Where Clause
     const whereClause: any = { inStock: true };
@@ -47,14 +50,26 @@ export default async function ShopPage({
       whereClause.length = { in: selectedLengths };
     }
 
-    // Filter by Condition (Search in title or description since no specific field)
-    if (conditions.length > 0) {
-      whereClause.OR = conditions.map(condition => ({
-        OR: [
-          { title: { contains: condition } },
-          { description: { contains: condition } }
-        ]
-      }));
+    // Filter by Category (replaces old condition filter)
+    if (selectedCategories.length > 0) {
+      const cleanCategories = selectedCategories.map(c => c.trim());
+
+      // Find categories by name to get IDs
+      const categoryRecords = await prisma.category.findMany({
+        where: {
+          name: { in: cleanCategories }
+        },
+        select: { id: true }
+      });
+
+      const categoryIds = categoryRecords.map(c => c.id);
+
+      if (categoryIds.length > 0) {
+        whereClause.categoryId = { in: categoryIds };
+      } else {
+        // If categories were selected but none found in DB (e.g. invalid name), match nothing
+        whereClause.categoryId = -1;
+      }
     }
 
     const products = await prisma.product.findMany({
@@ -80,9 +95,16 @@ export default async function ShopPage({
       where: { length: { not: null } },
       orderBy: { length: 'asc' }
     });
-    categories = distinctLengths
+    lengths = distinctLengths
       .map(p => p.length)
       .filter((l): l is string => typeof l === 'string' && l.length > 0);
+
+    // Fetch Product Categories for filter
+    const dbCategories = await prisma.category.findMany({
+      where: { isActive: true },
+      orderBy: { name: 'asc' }
+    });
+    productCategories = dbCategories.map(c => c.name);
 
   } catch (e) {
     console.error("Failed to fetch shop data", e);
@@ -109,7 +131,7 @@ export default async function ShopPage({
                 <ClearAllButton />
               </div>
 
-              <Filters categories={categories} />
+              <Filters categories={lengths} productCategories={productCategories} />
             </div>
           </aside>
 
@@ -126,7 +148,7 @@ export default async function ShopPage({
                       Showing <span className="font-semibold text-gray-900">{productList.length}</span> {productList.length === 1 ? 'product' : 'products'}
                     </p>
                   </div>
-                  <MobileFilters categories={categories} />
+                  <MobileFilters categories={lengths} productCategories={productCategories} />
                 </div>
 
                 <div className="flex items-center gap-3 bg-gray-50 rounded-full px-4 py-2.5 border border-gray-200">

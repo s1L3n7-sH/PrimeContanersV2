@@ -11,55 +11,55 @@ import {
 } from "@/components/ui/accordion";
 import { Check } from "lucide-react";
 
-const conditions = [
-    "One-Trip", // "New" often means One-Trip in containers
-    "Used",
-    "Cargo Worthy",
-    "Wind & Watertight",
-    "As Is"
-];
-
-const ConditionSection = () => {
+const ConditionSection = ({ categories = [] }: { categories?: string[] }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // Get selected conditions from URL
-    const selectedParam = searchParams.get('condition');
-    const selectedConditions = selectedParam ? selectedParam.split(',') : [];
+    // Get selected categories from URL
+    const selectedParam = searchParams.get('category');
+    const selectedCategories = selectedParam ? selectedParam.split(',') : [];
 
-    const toggleCondition = (condition: string) => {
+    const toggleCategory = (category: string) => {
         const params = new URLSearchParams(searchParams.toString());
         let newSelected: string[];
 
-        if (selectedConditions.includes(condition)) {
-            newSelected = selectedConditions.filter((c) => c !== condition);
+        if (selectedCategories.includes(category)) {
+            newSelected = selectedCategories.filter((c) => c !== category);
         } else {
-            newSelected = [...selectedConditions, condition];
+            newSelected = [...selectedCategories, category];
         }
 
         if (newSelected.length > 0) {
-            params.set('condition', newSelected.join(','));
+            params.set('category', newSelected.join(','));
         } else {
-            params.delete('condition');
+            params.delete('category');
         }
 
         router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
+    // If no categories provided, show nothing or placeholder?
+    // User requested functional component based on product category.
+    // If empty, better to hide or show "No categories".
+    // For now assuming categories will be passed.
+    const displayCategories = categories.length > 0 ? categories : [];
+
+    if (displayCategories.length === 0) return null;
+
     return (
-        <Accordion type="single" collapsible defaultValue="condition">
-            <AccordionItem value="condition" className="border-none">
+        <Accordion type="single" collapsible defaultValue="category">
+            <AccordionItem value="category" className="border-none">
                 <AccordionTrigger className="text-gray-900 font-semibold text-lg hover:no-underline py-2">
                     Condition
                 </AccordionTrigger>
                 <AccordionContent className="pt-2">
                     <div className="flex flex-col gap-2">
-                        {conditions.map((condition) => {
-                            const isSelected = selectedConditions.includes(condition);
+                        {displayCategories.map((category) => {
+                            const isSelected = selectedCategories.includes(category);
                             return (
                                 <button
-                                    key={condition}
-                                    onClick={() => toggleCondition(condition)}
+                                    key={category}
+                                    onClick={() => toggleCategory(category)}
                                     className="flex items-center gap-3 group text-left w-full hover:bg-gray-50 p-2 rounded-lg transition-colors"
                                 >
                                     <div className={cn(
@@ -74,7 +74,7 @@ const ConditionSection = () => {
                                         "text-sm font-medium transition-colors",
                                         isSelected ? "text-blue-700" : "text-gray-600 group-hover:text-gray-900"
                                     )}>
-                                        {condition}
+                                        {category}
                                     </span>
                                 </button>
                             );

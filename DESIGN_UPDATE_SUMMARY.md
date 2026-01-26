@@ -19,7 +19,7 @@ Successfully updated the Prime Containers website with a modern, engaging design
 - ✅ Glassmorphism effect with backdrop blur when scrolled
 - ✅ Removed search bar for cleaner design
 - ✅ Centered navigation menu
-- ✅ Added clickable phone number with icon: (123) 456-7890
+- ✅ Added clickable phone number with icon: (614)491-8402
 - ✅ Enhanced "Get Quote" button with gradient and animations
 - ✅ Logo hover scale effect
 - ✅ Responsive design maintained
@@ -139,7 +139,7 @@ src/
 ## Contact Customization
 Remember to update the phone number in the navbar:
 - File: `src/components/layout/Navbar/TopNavbar/index.tsx`
-- Line: Look for `(123) 456-7890` and replace with your actual business number
+- Line: Look for `(614)491-8402` and replace with your actual business number
 - Also update the `href="tel:+1234567890"` with the correct format
 
 ---

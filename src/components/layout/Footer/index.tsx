@@ -64,9 +64,9 @@ const Footer = () => {
                   <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
                     <Phone className="w-4 h-4" />
                   </div>
-                  <span className="text-sm font-medium">(123) 456-7890</span>
+                  <span className="text-sm font-medium">(614)491-8402</span>
                 </a>
-                <a href="mailto:info@primecontainers.com" className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors group">
+                <a href="mailto:contact@primecontainers.org" className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors group">
                   <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
                     <Mail className="w-4 h-4" />
                   </div>
@@ -76,7 +76,7 @@ const Footer = () => {
                   <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-4 h-4" />
                   </div>
-                  <span className="text-sm font-medium">123 Container St, Shipping City, SC 12345</span>
+                  <span className="text-sm font-medium">153 W Seventh St, Minster, OH, United States, 45865</span>
                 </div>
               </div>
 

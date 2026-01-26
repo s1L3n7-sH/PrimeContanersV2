@@ -22,14 +22,14 @@ const PhotoSection = ({ data }: { data: Product }) => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative group w-full aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-blue-100 shadow-lg"
+        className="relative group w-full max-w-[500px] mx-auto aspect-square rounded-3xl overflow-hidden bg-white border border-blue-100 shadow-lg"
       >
         <div className="absolute inset-0 bg-blue-50/30 group-hover:bg-transparent transition-colors duration-300" />
         <Image
           src={selected}
           alt={data.title}
           fill
-          className="object-contain p-4 group-hover:scale-105 transition-transform duration-700 ease-out"
+          className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           priority
           sizes="(max-width: 768px) 100vw, 50vw"
         />
@@ -37,7 +37,7 @@ const PhotoSection = ({ data }: { data: Product }) => {
         {/* Decorative badge */}
         <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-blue-100">
           <span className="text-xs font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent uppercase tracking-wider">
-            Premium View
+            Sample Picture
           </span>
         </div>
       </motion.div>
@@ -48,7 +48,7 @@ const PhotoSection = ({ data }: { data: Product }) => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="w-full overflow-hidden"
+          className="w-full max-w-[500px] mx-auto overflow-hidden"
           ref={emblaRef}
         >
           <div className="flex gap-3 py-2 px-1">
@@ -58,7 +58,7 @@ const PhotoSection = ({ data }: { data: Product }) => {
                 type="button"
                 onClick={() => setSelected(photo)}
                 className={cn(
-                  "relative flex-[0_0_35%] sm:flex-[0_0_25%] aspect-[16/10] rounded-xl overflow-hidden border transition-all duration-300",
+                  "relative flex-[0_0_20%] aspect-square rounded-xl overflow-hidden border transition-all duration-300",
                   selected === photo
                     ? "border-black/20 opacity-100 shadow-md ring-1 ring-black/5"
                     : "border-transparent opacity-60 hover:opacity-100 bg-gray-50"

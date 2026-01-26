@@ -171,7 +171,7 @@ export default async function Home() {
           <DressStyle />
         </div>
 
-        <TeamSection />
+        {/* <TeamSection /> */}
 
         <Quote />
         <Reviews data={reviewsData} />

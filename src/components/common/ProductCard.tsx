@@ -38,7 +38,7 @@ const ProductCard = ({ data, index = 0 }: ProductCardProps) => {
         >
           {/* Product Image */}
           <motion.div
-            className="relative w-full h-full flex items-center justify-center p-6"
+            className="relative w-full h-full flex items-center justify-center p-0"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.4 }}
           >
@@ -46,7 +46,7 @@ const ProductCard = ({ data, index = 0 }: ProductCardProps) => {
               src={data.srcUrl}
               width={320}
               height={320}
-              className="w-full h-full object-contain drop-shadow-md"
+              className="w-full h-full object-cover drop-shadow-md"
               alt={data.title}
               priority
             />
@@ -65,7 +65,7 @@ const ProductCard = ({ data, index = 0 }: ProductCardProps) => {
             >
               <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
                 <Sparkles className="w-3 h-3" />
-                Featured
+                Sample Picture
               </div>
             </motion.div>
           )}

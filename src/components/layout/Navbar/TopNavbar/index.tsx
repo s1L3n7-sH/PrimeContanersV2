@@ -86,14 +86,14 @@ const TopNavbar = () => {
               className="flex items-center gap-2 hover:text-blue-100 transition-colors group"
             >
               <Phone className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-              <span className="font-medium">(123) 456-7890</span>
+              <span className="font-medium">(614)491-8402</span>
             </a>
             <a
-              href="mailto:info@primecontainers.com"
+              href="mailto:contact@primecontainers.org"
               className="flex items-center gap-2 hover:text-blue-100 transition-colors group"
             >
               <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
-              <span>info@primecontainers.com</span>
+              <span>contact@primecontainers.org</span>
             </a>
           </div>
           <div className="flex items-center gap-2 text-blue-100">
@@ -184,7 +184,7 @@ const TopNavbar = () => {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs text-gray-500 font-medium">Call Us</span>
-                  <span className="text-sm font-bold text-gray-800">(123) 456-7890</span>
+                  <span className="text-sm font-bold text-gray-800">(614)491-8402</span>
                 </div>
               </motion.a>
 
