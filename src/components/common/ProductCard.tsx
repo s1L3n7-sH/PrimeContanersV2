@@ -56,19 +56,17 @@ const ProductCard = ({ data, index = 0 }: ProductCardProps) => {
           <div className="absolute inset-0 bg-gradient-to-t from-blue-600/0 via-transparent to-transparent group-hover:from-blue-600/10 transition-all duration-500" />
 
           {/* Featured badge */}
-          {index < 3 && (
-            <motion.div
-              className="absolute top-3 left-3"
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
-            >
-              <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                <Sparkles className="w-3 h-3" />
-                Sample Picture
-              </div>
-            </motion.div>
-          )}
+          <motion.div
+            className="absolute top-3 left-3"
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
+          >
+            <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+              <Sparkles className="w-3 h-3" />
+              Sample Picture
+            </div>
+          </motion.div>
 
           {/* Rating Badge */}
           {data.rating && (
