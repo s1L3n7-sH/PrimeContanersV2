@@ -175,44 +175,19 @@ export default async function ShopPage({
               ))}
             </div>
 
-            {/* Pagination... (rest of the file) */}
             {productList.length > 0 && (
-              <div className="flex justify-center items-center gap-2 py-8">
+              <div className="flex justify-center items-center gap-4">
                 {/* Previous Button */}
-                <button className="group px-5 py-2.5 rounded-full border-2 border-gray-200 hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2">
+                <button className="group px-6 py-2.5 rounded-full border-2 border-gray-200 hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2 bg-white shadow-sm hover:shadow-md">
                   <svg className="w-4 h-4 text-gray-600 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">Previous</span>
+                  <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">Previous</span>
                 </button>
 
-                {/* Page Numbers */}
-                <div className="flex items-center gap-2">
-                  {/* Active Page */}
-                  <button className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
-                    1
-                  </button>
-
-                  {/* Other Pages */}
-                  <button className="w-10 h-10 rounded-full bg-white border border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-semibold text-sm transition-all duration-300 hover:bg-blue-50 hover:scale-105">
-                    2
-                  </button>
-
-                  <button className="w-10 h-10 rounded-full bg-white border border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-semibold text-sm transition-all duration-300 hover:bg-blue-50 hover:scale-105">
-                    3
-                  </button>
-
-                  {/* Ellipsis */}
-                  <span className="px-2 text-gray-400">...</span>
-
-                  <button className="w-10 h-10 rounded-full bg-white border border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-semibold text-sm transition-all duration-300 hover:bg-blue-50 hover:scale-105">
-                    10
-                  </button>
-                </div>
-
                 {/* Next Button */}
-                <button className="group px-5 py-2.5 rounded-full border-2 border-gray-200 hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2">
-                  <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">Next</span>
+                <button className="group px-6 py-2.5 rounded-full border-2 border-gray-200 hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2 bg-white shadow-sm hover:shadow-md">
+                  <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">Next</span>
                   <svg className="w-4 h-4 text-gray-600 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
