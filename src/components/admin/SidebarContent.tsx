@@ -16,6 +16,7 @@ import {
     ChevronRight,
     Briefcase,
     MessageCircle,
+    Calendar,
 } from "lucide-react";
 import { logout } from "@/app/prime-panel/actions";
 import {
@@ -72,6 +73,11 @@ const sidebarItems: SidebarItem[] = [
         icon: Briefcase,
         label: "Careers",
         href: "/prime-panel/dashboard/careers",
+    },
+    {
+        icon: Calendar,
+        label: "Rentals",
+        href: "/prime-panel/dashboard/rentals",
     },
     {
         icon: Users, // Using same icon, or could use Shield/UserCog

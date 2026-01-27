@@ -110,6 +110,28 @@ model CareerApplication {
   updatedAt DateTime @updatedAt
 }
 
+model RentalPlan {
+  id        Int            @id @default(autoincrement())
+  type      String
+  category  RentalCategory
+  prices    RentalPrice[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model RentalPrice {
+  id           Int        @id @default(autoincrement())
+  term         String
+  price        String
+  rentalPlanId Int
+  rentalPlan   RentalPlan @relation(fields: [rentalPlanId], references: [id], onDelete: Cascade)
+}
+
+enum RentalCategory {
+  RENT_TO_OWN
+  SHORT_TERM
+}
+
 enum ApplicationStatus {
   NEW
   REVIEWED
