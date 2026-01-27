@@ -71,7 +71,7 @@ const sidebarItems: SidebarItem[] = [
     },
     {
         icon: Briefcase,
-        label: "Careers",
+        label: "Applicants",
         href: "/prime-panel/dashboard/careers",
     },
     {
