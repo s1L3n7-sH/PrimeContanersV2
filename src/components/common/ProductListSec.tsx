@@ -88,11 +88,11 @@ const ProductListSec = ({ title, data, viewAllLink }: ProductListSecProps) => {
           }}
           className="w-full mb-12"
         >
-          <CarouselContent className="mx-4 xl:mx-0 space-x-6">
+          <CarouselContent className="mx-4 xl:mx-0 -ml-6">
             {data.map((product, index) => (
               <CarouselItem
                 key={product.id}
-                className="w-full max-w-[220px] sm:max-w-[320px] pl-0"
+                className="w-full max-w-[220px] sm:max-w-[320px] pl-6"
               >
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
