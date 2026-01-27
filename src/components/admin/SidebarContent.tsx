@@ -60,11 +60,6 @@ const sidebarItems: SidebarItem[] = [
         href: "/prime-panel/dashboard/orders",
     },
     {
-        icon: Users,
-        label: "Customers",
-        href: "/prime-panel/dashboard/customers",
-    },
-    {
         icon: MessageCircle,
         label: "FB Quote",
         href: "/prime-panel/dashboard/fb-quote",
