@@ -9,10 +9,10 @@ import NewsLetterSection from "./NewsLetterSection";
 import * as motion from "framer-motion/client";
 
 const socialsData = [
-  { id: 1, icon: <FaTwitter />, url: "https://twitter.com", label: "Twitter" },
-  { id: 2, icon: <FaFacebookF />, url: "https://facebook.com", label: "Facebook" },
-  { id: 3, icon: <FaInstagram />, url: "https://instagram.com", label: "Instagram" },
-  { id: 4, icon: <FaLinkedinIn />, url: "https://linkedin.com", label: "LinkedIn" },
+  { id: 1, icon: <FaTwitter />, url: "", label: "Twitter" },
+  { id: 2, icon: <FaFacebookF />, url: "https://www.facebook.com/profile.php?id=61581232337852", label: "Facebook" },
+  { id: 3, icon: <FaInstagram />, url: "", label: "Instagram" },
+  { id: 4, icon: <FaLinkedinIn />, url: "", label: "LinkedIn" },
 ];
 
 const Footer = () => {
@@ -101,7 +101,7 @@ const Footer = () => {
           </div>
 
           {/* Links Columns */}
-          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
+          <div className="lg:col-span-8 grid grid-cols-3 gap-8">
             <LinksSection />
           </div>
         </div>

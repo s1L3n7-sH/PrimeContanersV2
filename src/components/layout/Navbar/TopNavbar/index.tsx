@@ -41,13 +41,6 @@ const data: NavMenu = [
   {
     id: 4,
     type: "MenuItem",
-    label: "Contact",
-    url: "/shop#brands",
-    children: [],
-  },
-  {
-    id: 5,
-    type: "MenuItem",
     label: "Career",
     url: "/career",
     children: [],

@@ -154,7 +154,7 @@ const Header = () => {
                 className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold text-base sm:text-lg px-8 py-4 rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 overflow-hidden"
               >
                 <span className="relative z-10 flex items-center gap-3">
-                  Browse Inventory
+                  View Containers
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

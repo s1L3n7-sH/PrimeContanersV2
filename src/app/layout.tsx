@@ -34,10 +34,10 @@ export default function RootLayout({
             <TopNavbar />
           </HideOnAdmin>
           {children}
+          <HideOnAdmin>
+            <Footer />
+          </HideOnAdmin>
         </Providers>
-        <HideOnAdmin>
-          <Footer />
-        </HideOnAdmin>
       </body>
     </html>
   );

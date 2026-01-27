@@ -6,105 +6,74 @@ import { cn } from "@/lib/utils";
 const footerLinksData: FooterLinks[] = [
   {
     id: 1,
-    title: "company",
+    title: "Services",
     children: [
       {
         id: 11,
-        label: "about",
-        url: "#",
+        label: "Buy Containers",
+        url: "/shop",
       },
       {
         id: 12,
-        label: "features",
-        url: "#",
+        label: "Rent Containers",
+        url: "/rental",
       },
       {
         id: 13,
-        label: "works",
-        url: "#",
+        label: "Delivery Info",
+        url: "/shop#new-arrivals",
       },
       {
         id: 14,
-        label: "career",
-        url: "#",
+        label: "Request Quote",
+        url: "/#quote",
       },
     ],
   },
   {
     id: 2,
-    title: "help",
+    title: "Company",
     children: [
       {
         id: 21,
-        label: "customer support",
-        url: "#",
+        label: "About Us",
+        url: "/#about",
       },
       {
         id: 22,
-        label: "delivery details",
-        url: "#",
+        label: "Careers",
+        url: "/career",
       },
       {
         id: 23,
-        label: "terms & conditions",
-        url: "#",
+        label: "Privacy Policy",
+        url: "/privacy",
       },
       {
         id: 24,
-        label: "privacy policy",
-        url: "#",
+        label: "Terms of Service",
+        url: "/terms",
       },
     ],
   },
   {
     id: 3,
-    title: "faq",
+    title: "Support",
     children: [
       {
         id: 31,
-        label: "account",
-        url: "#",
-      },
-      {
-        id: 32,
-        label: "manage deliveries",
-        url: "#",
+        label: "Contact Us",
+        url: "/#quote", // Directing to quote as contact
       },
       {
         id: 33,
-        label: "orders",
-        url: "#",
+        label: "FAQs",
+        url: "/#faq",
       },
       {
         id: 34,
-        label: "payments",
-        url: "#",
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: "resources",
-    children: [
-      {
-        id: 41,
-        label: "Free eBooks",
-        url: "#",
-      },
-      {
-        id: 42,
-        label: "development tutorial",
-        url: "#",
-      },
-      {
-        id: 43,
-        label: "How to - Blog",
-        url: "#",
-      },
-      {
-        id: 44,
-        label: "youtube playlist",
-        url: "#",
+        label: "Support Center",
+        url: "/#quote",
       },
     ],
   },
@@ -122,10 +91,7 @@ const LinksSection = () => {
             <Link
               href={link.url}
               key={link.id}
-              className={cn([
-                link.id !== 41 && link.id !== 43 && "capitalize",
-                "text-black/60 text-sm md:text-base mb-4 w-fit",
-              ])}
+              className="text-black/60 hover:text-blue-600 transition-colors text-sm md:text-base mb-4 w-fit"
             >
               {link.label}
             </Link>

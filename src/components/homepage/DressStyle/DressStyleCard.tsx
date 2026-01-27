@@ -84,7 +84,7 @@ const DressStyleCard = ({
         </div>
 
         {/* Bottom CTA */}
-        <motion.div
+        {/* <motion.div
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -103,7 +103,7 @@ const DressStyleCard = ({
               <ArrowRight className="w-4 h-4 text-white group-hover/btn:translate-x-0.5 transition-transform" />
             </div>
           </Link>
-        </motion.div>
+        </motion.div> */}
       </div>
 
       {/* Elegant Shine Effect on Hover */}
