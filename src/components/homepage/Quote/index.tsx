@@ -63,7 +63,6 @@ const Quote = () => {
         <section id="quote" className="relative py-16 md:py-24 scroll-mt-28 overflow-hidden">
             {/* Enhanced gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-cyan-50 to-sky-50 -z-10" />
-            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] -z-10" />
 
             {/* Animated background shapes */}
             <motion.div

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Sheet,
@@ -18,10 +20,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { usePathname } from "next/navigation";
 
 
 
 const ResTopNavbar = ({ data }: { data: NavMenu }) => {
+  const pathname = usePathname();
+
+  // Check if a nav item is active
+  const isActive = (url: string) => {
+    if (url === "/") return pathname === "/";
+    return pathname.startsWith(url);
+  };
   return (
     <Sheet>
       <SheetTrigger asChild className="cursor-pointer">
@@ -49,7 +59,15 @@ const ResTopNavbar = ({ data }: { data: NavMenu }) => {
             <React.Fragment key={item.id}>
               {item.type === "MenuItem" && (
                 <SheetClose asChild>
-                  <Link href={item.url ?? "/"} className="mb-4">
+                  <Link
+                    href={item.url ?? "/"}
+                    className={cn(
+                      "mb-4 py-2 px-3 rounded-lg transition-colors",
+                      isActive(item.url ?? "/")
+                        ? "text-blue-600 font-semibold bg-blue-50 border-l-4 border-blue-600"
+                        : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                    )}
+                  >
                     {item.label}
                   </Link>
                 </SheetClose>

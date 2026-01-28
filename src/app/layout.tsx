@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import HideOnAdmin from "@/components/layout/HideOnAdmin";
 import HolyLoader from "holy-loader";
 import Providers from "./providers";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "Prime Containers",
@@ -37,6 +38,7 @@ export default function RootLayout({
           <HideOnAdmin>
             <Footer />
           </HideOnAdmin>
+          <ScrollToTop />
         </Providers>
       </body>
     </html>

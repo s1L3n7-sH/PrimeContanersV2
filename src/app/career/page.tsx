@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import Image from "next/image";
 
 export default function CareerPage() {
     const [formState, setFormState] = useState({
@@ -226,6 +227,44 @@ export default function CareerPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/50 relative overflow-hidden">
+            {/* Hero Section with Image - Same as Rental/Delivery */}
+            <div className="relative h-[450px] flex items-center justify-center overflow-hidden">
+                <Image
+                    src="/images/career/hero.png"
+                    alt="Join Our Team"
+                    fill
+                    className="object-cover"
+                    priority
+                />
+                <div className="absolute inset-0 bg-black/60" />
+                <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 backdrop-blur-md border border-blue-400/30 text-blue-100 font-semibold text-sm mb-6"
+                    >
+                        <Sparkles className="w-4 h-4" />
+                        We're Hiring
+                    </motion.div>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight drop-shadow-lg"
+                    >
+                        Shape Your Future
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-2xl mx-auto drop-shadow-md"
+                    >
+                        Join Prime Containers and be part of a team that's revolutionizing the container industry
+                    </motion.p>
+                </div>
+            </div>
+
             {/* Animated Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <motion.div
@@ -248,45 +287,9 @@ export default function CareerPage() {
                 />
             </div>
 
-            {/* Hero Section */}
+            {/* Content Section */}
             <div className="relative z-10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="text-center mb-16"
-                    >
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3, duration: 0.8 }}
-                            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-900 to-cyan-900 bg-clip-text text-transparent"
-                        >
-                            Shape Your Future
-                        </motion.h1>
-
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4, duration: 0.8 }}
-                            className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8"
-                        >
-                            Join Prime Containers and be part of a team that's revolutionizing the container industry
-                        </motion.p>
-
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.5, duration: 0.8 }}
-                            className="flex items-center justify-center gap-2 text-blue-600"
-                        >
-                            <Sparkles className="w-5 h-5 animate-pulse" />
-                            <span className="font-semibold">We're actively hiring</span>
-                            <Sparkles className="w-5 h-5 animate-pulse" />
-                        </motion.div>
-                    </motion.div>
-
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
                     {/* Benefits Grid */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}

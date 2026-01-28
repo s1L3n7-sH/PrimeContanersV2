@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { NavMenu } from "../navbar.types";
 import { MenuList } from "./MenuList";
@@ -35,7 +36,7 @@ const data: NavMenu = [
     id: 3,
     type: "MenuItem",
     label: "Delivery",
-    url: "/shop#new-arrivals",
+    url: "/delivery-guidelines",
     children: [],
   },
   {
@@ -50,6 +51,13 @@ const data: NavMenu = [
 
 const TopNavbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Check if a nav item is active
+  const isActive = (url: string) => {
+    if (url === "/") return pathname === "/";
+    return pathname.startsWith(url);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -150,7 +158,12 @@ const TopNavbar = () => {
                       {item.type === "MenuItem" && item.url && (
                         <Link
                           href={item.url!}
-                          className="relative px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600 transition-colors"
+                          className={cn(
+                            "relative px-4 py-2 text-sm font-semibold transition-colors",
+                            isActive(item.url)
+                              ? "text-blue-600"
+                              : "text-gray-700 hover:text-blue-600"
+                          )}
                         >
                           {item.label}
                         </Link>
@@ -188,19 +201,10 @@ const TopNavbar = () => {
               >
                 <Link
                   href="/#quote"
-                  className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-700 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300"
+                  className="group relative inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300"
                 >
-                  {/* Animated background on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-700 via-blue-800 to-blue-900 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  {/* Shine effect */}
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
                   <Truck className="w-5 h-5 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
                   <span className="relative z-10 whitespace-nowrap">Get Quote</span>
-
-                  {/* Pulse effect */}
-                  <div className="absolute inset-0 rounded-xl bg-blue-400 opacity-0 group-hover:opacity-20 group-hover:animate-ping" />
                 </Link>
               </motion.div>
             </div>

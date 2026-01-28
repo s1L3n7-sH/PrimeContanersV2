@@ -1,6 +1,6 @@
 import {
   topSellingData,
-} from "@/app/page";
+} from "@/lib/staticData";
 import ProductListSec from "@/components/common/ProductListSec";
 import BreadcrumbProduct from "@/components/product-page/BreadcrumbProduct";
 import Header from "@/components/product-page/Header";

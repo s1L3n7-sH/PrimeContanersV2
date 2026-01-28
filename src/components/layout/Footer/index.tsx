@@ -15,9 +15,14 @@ const socialsData = [
   { id: 4, icon: <FaLinkedinIn />, url: "", label: "LinkedIn" },
 ];
 
+import LocationsMap from "@/components/ui/LocationsMap";
+
 const Footer = () => {
   return (
     <footer className="relative mt-20 bg-gradient-to-b from-white via-blue-50/30 to-white">
+      {/* Locations Map */}
+      <LocationsMap />
+
       {/* Newsletter Section */}
       <div className="relative px-4 mb-16">
         <NewsLetterSection />
