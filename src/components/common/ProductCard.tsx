@@ -57,14 +57,15 @@ const ProductCard = ({ data, index = 0 }: ProductCardProps) => {
 
           {/* Featured badge */}
           <motion.div
-            className="absolute top-3 left-3"
+            className="absolute top-3 right-3"
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
           >
-            <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-              <Sparkles className="w-3 h-3" />
-              Sample Picture
+            <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-blue-100">
+              <span className="text-xs font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent uppercase tracking-wider">
+                Sample Picture
+              </span>
             </div>
           </motion.div>
 

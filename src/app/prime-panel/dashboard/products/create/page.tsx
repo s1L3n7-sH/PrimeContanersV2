@@ -1,11 +1,11 @@
 "use client";
 
 import { createProduct } from "@/actions/product.actions";
-import { ArrowLeft, Save, Upload, Info, X } from "lucide-react";
+import { ArrowLeft, Save, Upload, Info, X, Plus } from "lucide-react";
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
 import { useState, useEffect } from "react";
-import { getAllCategories } from "@/actions/category.actions";
+import { getAllCategories, createCategory } from "@/actions/category.actions";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -15,6 +15,15 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 function SubmitButton({ onClick }: { onClick: (e: React.MouseEvent) => void }) {
     const { pending } = useFormStatus();
@@ -38,6 +47,12 @@ export default function CreateProductPage() {
     const [errorMessage, setErrorMessage] = useState("");
     const [categories, setCategories] = useState<any[]>([]);
 
+    // New validation state for category creation
+    const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState("");
+    const [isCreatingCategory, setIsCreatingCategory] = useState(false);
+    const [selectedCategoryId, setSelectedCategoryId] = useState("");
+
     useEffect(() => {
         async function fetchCategories() {
             const { data } = await getAllCategories();
@@ -47,6 +62,24 @@ export default function CreateProductPage() {
         }
         fetchCategories();
     }, []);
+
+    const handleCreateCategory = async () => {
+        if (!newCategoryName.trim()) return;
+
+        setIsCreatingCategory(true);
+        const result = await createCategory({ name: newCategoryName });
+
+        if (result.success && result.data) {
+            setCategories([result.data, ...categories]);
+            setNewCategoryName("");
+            setIsCategoryDialogOpen(false);
+            setSelectedCategoryId(result.data.id.toString());
+        } else {
+            setErrorMessage("Failed to create category. It might already exist.");
+            setShowErrorDialog(true);
+        }
+        setIsCreatingCategory(false);
+    };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -95,6 +128,42 @@ export default function CreateProductPage() {
                 </AlertDialogContent>
             </AlertDialog>
 
+            <Dialog open={isCategoryDialogOpen} onOpenChange={setIsCategoryDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Create New Category</DialogTitle>
+                        <DialogDescription>
+                            Add a new category for your products.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="py-4">
+                        <label htmlFor="cardName" className="block text-sm font-medium text-gray-700 mb-2">Category Name</label>
+                        <input
+                            type="text"
+                            value={newCategoryName}
+                            onChange={(e) => setNewCategoryName(e.target.value)}
+                            placeholder="e.g. Refrigerated Containers"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[#2c2c9c] focus:border-transparent outline-none"
+                        />
+                    </div>
+                    <DialogFooter>
+                        <button
+                            onClick={() => setIsCategoryDialogOpen(false)}
+                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleCreateCategory}
+                            disabled={isCreatingCategory || !newCategoryName.trim()}
+                            className="px-4 py-2 text-sm font-medium text-white bg-[#2c2c9c] rounded-md hover:bg-[#1a1a7a] disabled:opacity-50"
+                        >
+                            {isCreatingCategory ? "Creating..." : "Create Category"}
+                        </button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
             <div className="flex items-center gap-4 mb-8">
                 <Link
                     href="/prime-panel/dashboard/products"
@@ -120,8 +189,8 @@ export default function CreateProductPage() {
                     </div>
 
                     <div className="p-8 space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div className="space-y-2">
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                            <div className="md:col-span-6 space-y-2">
                                 <label htmlFor="title" className="block text-sm font-semibold text-gray-700">
                                     Product Title <span className="text-red-500">*</span>
                                 </label>
@@ -134,14 +203,25 @@ export default function CreateProductPage() {
                                     className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-4 focus:ring-[#2c2c9c]/10 focus:border-[#2c2c9c] outline-none transition-all"
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label htmlFor="categoryId" className="block text-sm font-semibold text-gray-700">
-                                    Category
-                                </label>
+                            <div className="md:col-span-3 space-y-2">
+                                <div className="flex items-center justify-between h-5">
+                                    <label htmlFor="categoryId" className="block text-sm font-semibold text-gray-700">
+                                        Category
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsCategoryDialogOpen(true)}
+                                        className="text-xs text-[#2c2c9c] px-2 py-0.5 rounded-md font-medium hover:text-[#1a1a7a] flex items-center gap-1 transition-colors hover:bg-blue-50"
+                                    >
+                                        <Plus className="w-3 h-3" /> New
+                                    </button>
+                                </div>
                                 <div className="relative">
                                     <select
                                         name="categoryId"
                                         id="categoryId"
+                                        value={selectedCategoryId}
+                                        onChange={(e) => setSelectedCategoryId(e.target.value)}
                                         className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-4 focus:ring-[#2c2c9c]/10 focus:border-[#2c2c9c] outline-none transition-all appearance-none bg-white"
                                     >
                                         <option value="">Select a category</option>
@@ -158,7 +238,7 @@ export default function CreateProductPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="space-y-2">
+                            <div className="md:col-span-3 space-y-2">
                                 <label htmlFor="length" className="block text-sm font-semibold text-gray-700">
                                     Length
                                 </label>
@@ -172,8 +252,6 @@ export default function CreateProductPage() {
                                     />
                                 </div>
                             </div>
-
-
                         </div>
 
                         <div className="space-y-2">

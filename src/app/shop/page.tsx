@@ -23,11 +23,12 @@ import { prisma } from "@/lib/prisma";
 import { Product } from "@/types/product.types";
 import { Category } from "@prisma/client";
 import ClearAllButton from "@/components/shop-page/filters/ClearAllButton";
+import ShopSorter from "@/components/shop-page/ShopSorter";
 
 export default async function ShopPage({
   searchParams,
 }: {
-  searchParams: Promise<{ length?: string; minPrice?: string; maxPrice?: string; condition?: string; category?: string }>;
+  searchParams: Promise<{ length?: string; minPrice?: string; maxPrice?: string; condition?: string; category?: string; sort?: string }>;
 }) {
   let dbProducts: Product[] = [];
   let lengths: string[] = []; // Renamed from categories to lengths for clarity
@@ -41,6 +42,7 @@ export default async function ShopPage({
     const selectedLengths = params.length ? params.length.split(',').map(l => l.trim()) : [];
     // Condition param is legacy or can be recycled, but user requested category
     const selectedCategories = params.category ? params.category.split(',') : [];
+    const sortOption = params.sort || "most-popular";
 
     // Build Where Clause
     const whereClause: any = { inStock: true };
@@ -72,11 +74,32 @@ export default async function ShopPage({
       }
     }
 
-    const products = await prisma.product.findMany({
-      orderBy: { createdAt: 'desc' },
-      where: whereClause,
-      include: { images: true }
-    });
+    // Determine Sort Order
+    let orderBy: any = { createdAt: 'desc' }; // Default fallback
+
+    if (sortOption === 'newest') {
+      orderBy = { createdAt: 'desc' };
+    } else if (sortOption === 'most-popular') {
+      // Sort by views (clicks)
+      orderBy = { views: 'desc' };
+    }
+
+    let products;
+    try {
+      products = await prisma.product.findMany({
+        orderBy: orderBy,
+        where: whereClause,
+        include: { images: true }
+      });
+    } catch (queryError) {
+      console.warn("Primary sort failed, falling back to default sort", queryError);
+      // Fallback to createdAt desc if views sort fails (e.g. schema mismatch)
+      products = await prisma.product.findMany({
+        orderBy: { createdAt: 'desc' },
+        where: whereClause,
+        include: { images: true }
+      });
+    }
 
     dbProducts = products.map(p => ({
       id: p.id,
@@ -151,21 +174,7 @@ export default async function ShopPage({
                   <MobileFilters categories={lengths} productCategories={productCategories} />
                 </div>
 
-                <div className="flex items-center gap-3 bg-gray-50 rounded-full px-4 py-2.5 border border-gray-200">
-                  <span className="text-sm font-medium text-gray-700">Sort by:</span>
-                  <Select defaultValue="most-popular">
-                    <SelectTrigger className="font-semibold text-sm w-fit text-gray-900 bg-transparent shadow-none border-none h-auto p-0">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="most-popular">Most Popular</SelectItem>
-                      <SelectItem value="newest">Newest First</SelectItem>
-                      <SelectItem value="low-price">Price: Low to High</SelectItem>
-                      <SelectItem value="high-price">Price: High to Low</SelectItem>
-                      <SelectItem value="rating">Highest Rated</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <ShopSorter />
               </div>
             </div>
 

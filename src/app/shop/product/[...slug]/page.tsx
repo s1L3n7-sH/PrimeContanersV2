@@ -1,7 +1,7 @@
 import {
   topSellingData,
 } from "@/lib/staticData";
-import ProductListSec from "@/components/common/ProductListSec";
+
 import BreadcrumbProduct from "@/components/product-page/BreadcrumbProduct";
 import Header from "@/components/product-page/Header";
 import Tabs from "@/components/product-page/Tabs";
@@ -19,20 +19,34 @@ export default async function ProductPage({
   const productId = Number(params.slug[0]);
   let productData: Product | undefined;
 
-  // Try to find in database first
   try {
     if (!isNaN(productId)) {
-      const dbProduct = await prisma.product.findUnique({
-        where: { id: productId },
-        include: { images: true }
-      });
+      let dbProduct;
+      try {
+        dbProduct = await prisma.product.update({
+          where: { id: productId },
+          data: {
+            views: {
+              increment: 1
+            }
+          },
+          include: { images: true }
+        });
+      } catch (err) {
+        // Fallback if update fails
+        console.warn("Could not update view count", err);
+        dbProduct = await prisma.product.findUnique({
+          where: { id: productId },
+          include: { images: true }
+        });
+      }
 
       if (dbProduct && dbProduct.inStock) {
         productData = {
           id: dbProduct.id,
           title: dbProduct.title,
           srcUrl: dbProduct.images[0]?.url || '/images/placeholder.png',
-          gallery: dbProduct.images.length > 0 ? dbProduct.images.map(i => i.url) : [],
+          gallery: dbProduct.images.length > 0 ? dbProduct.images.map((i: any) => i.url) : [],
           price: Number(dbProduct.price),
           discount: {
             amount: 0,
@@ -59,7 +73,7 @@ export default async function ProductPage({
   }
 
   // Related products can just be static or a different DB query
-  const relatedProducts = topSellingData.slice(0, 4);
+
 
   return (
     <main>
@@ -71,9 +85,7 @@ export default async function ProductPage({
         </section>
         <Tabs />
       </div>
-      <div className="mb-[50px] sm:mb-20">
-        <ProductListSec title="You might also like" data={relatedProducts} />
-      </div>
+
     </main>
   );
 }
