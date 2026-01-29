@@ -182,7 +182,7 @@ export default function RentalClient({ rentalPlans }: { rentalPlans: any[] }) {
                             </div>
                             <div className="relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-lg">
                                 <video
-                                    src="/videos/about.mp4"
+                                    src="/videos/about2.mp4"
                                     className="w-full h-full object-cover"
                                     autoPlay
                                     muted
