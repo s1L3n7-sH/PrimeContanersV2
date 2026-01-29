@@ -105,7 +105,7 @@ const AboutUs = () => {
                     {/* Video Container */}
                     <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
                         <video
-                            src="/videos/about.mp4"
+                            src="/videos/about2.mp4"
                             autoPlay
                             loop
                             muted

@@ -10,32 +10,32 @@ import {
 
 const brandsData: { id: string; srcUrl: string }[] = [
   {
-    id: "versace",
-    srcUrl: "/icons/versace-logo.svg",
+    id: "hapag-loyd",
+    srcUrl: "/icons/hapag-loyd.svg",
   },
   {
-    id: "zara",
-    srcUrl: "/icons/zara-logo.svg",
+    id: "cism",
+    srcUrl: "/icons/cism.svg",
   },
   {
-    id: "gucci",
-    srcUrl: "/icons/gucci-logo.svg",
+    id: "cosco",
+    srcUrl: "/icons/cosco.svg",
   },
   {
-    id: "prada",
-    srcUrl: "/icons/prada-logo.svg",
+    id: "maersk",
+    srcUrl: "/icons/maersk.svg",
   },
   {
-    id: "calvin-klein2",
-    srcUrl: "/icons/calvin-klein-logo.svg",
+    id: "evergreen",
+    srcUrl: "/icons/evergreen.svg",
   },
   {
-    id: "calvin-klein3",
-    srcUrl: "/icons/calvin-klein-logo.svg",
+    id: "msc",
+    srcUrl: "/icons/msc.svg",
   },
   {
-    id: "calvin-klein4",
-    srcUrl: "/icons/calvin-klein-logo.svg",
+    id: "cma",
+    srcUrl: "/icons/cma.svg",
   },
 ];
 
