@@ -7,15 +7,29 @@ import nodemailer from "nodemailer";
 
 
 async function sendQuoteEmail(email: string, name: string) {
-    if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
-        console.warn("SMTP credentials not found in environment variables. Email not sent.");
+    console.log(`[EMAIL] Attempting to send quote confirmation email to: ${email}`);
+
+    // Check for missing SMTP credentials
+    if (!process.env.SMTP_EMAIL) {
+        console.warn("[EMAIL] ❌ SMTP_EMAIL is not set in environment variables. Email not sent.");
+        return;
+    }
+    if (!process.env.SMTP_PASSWORD) {
+        console.warn("[EMAIL] ❌ SMTP_PASSWORD is not set in environment variables. Email not sent.");
         return;
     }
 
-    const transporter = nodemailer.createTransport({
+    const smtpConfig = {
         host: process.env.SMTP_HOST || "smtp.gmail.com",
         port: parseInt(process.env.SMTP_PORT || "587"),
         secure: process.env.SMTP_SECURE === "true",
+    };
+
+    console.log(`[EMAIL] SMTP Config: Host=${smtpConfig.host}, Port=${smtpConfig.port}, Secure=${smtpConfig.secure}`);
+    console.log(`[EMAIL] Sending from: ${process.env.SMTP_EMAIL}`);
+
+    const transporter = nodemailer.createTransport({
+        ...smtpConfig,
         auth: {
             user: process.env.SMTP_EMAIL,
             pass: process.env.SMTP_PASSWORD,
@@ -23,8 +37,9 @@ async function sendQuoteEmail(email: string, name: string) {
     });
 
     try {
-        await transporter.sendMail({
-            from: '"Prime Containers" <no-reply@primecontainers.org>',
+        console.log(`[EMAIL] Sending email to ${email}...`);
+        const info = await transporter.sendMail({
+            from: '"Prime Containers" <contact@primecontainers.org>',
             to: email,
             subject: "Quote Request Received - Prime Containers",
             html: `
@@ -130,9 +145,20 @@ async function sendQuoteEmail(email: string, name: string) {
                 </html>
             `,
         });
-        console.log(`Quote confirmation email sent to ${email}`);
-    } catch (error) {
-        console.error("Failed to send quote confirmation email:", error);
+        console.log(`[EMAIL] ✅ Quote confirmation email sent successfully to ${email}`);
+        console.log(`[EMAIL] Message ID: ${info.messageId}`);
+    } catch (error: any) {
+        console.error(`[EMAIL] ❌ Failed to send quote confirmation email to ${email}`);
+        console.error(`[EMAIL] Error name: ${error?.name || 'Unknown'}`);
+        console.error(`[EMAIL] Error message: ${error?.message || 'No message'}`);
+        console.error(`[EMAIL] Error code: ${error?.code || 'No code'}`);
+        if (error?.response) {
+            console.error(`[EMAIL] SMTP Response: ${error.response}`);
+        }
+        if (error?.responseCode) {
+            console.error(`[EMAIL] SMTP Response Code: ${error.responseCode}`);
+        }
+        console.error(`[EMAIL] Full error:`, error);
     }
 }
 

@@ -7,7 +7,7 @@ const ClearAllButton = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const hasFilters = searchParams.toString().length > 0;
+    const hasFilters = (searchParams?.toString() ?? '').length > 0;
 
     const handleClearAll = () => {
         router.push('/shop', { scroll: false });

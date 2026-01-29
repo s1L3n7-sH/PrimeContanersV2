@@ -17,8 +17,8 @@ const PriceSection = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const minParam = searchParams.get('minPrice');
-  const maxParam = searchParams.get('maxPrice');
+  const minParam = searchParams?.get('minPrice');
+  const maxParam = searchParams?.get('maxPrice');
 
   // Initial values from URL or defaults
   const initialMin = minParam ? Number(minParam) : MIN_PRICE;
@@ -30,7 +30,7 @@ const PriceSection = () => {
 
   const handleValueCommit = (values: number[]) => {
     const [min, max] = values;
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() ?? '');
 
     if (min > MIN_PRICE) {
       params.set('minPrice', min.toString());

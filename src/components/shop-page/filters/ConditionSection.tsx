@@ -16,11 +16,11 @@ const ConditionSection = ({ categories = [] }: { categories?: string[] }) => {
     const searchParams = useSearchParams();
 
     // Get selected categories from URL
-    const selectedParam = searchParams.get('category');
+    const selectedParam = searchParams?.get('category');
     const selectedCategories = selectedParam ? selectedParam.split(',') : [];
 
     const toggleCategory = (category: string) => {
-        const params = new URLSearchParams(searchParams.toString());
+        const params = new URLSearchParams(searchParams?.toString() ?? '');
         let newSelected: string[];
 
         if (selectedCategories.includes(category)) {

@@ -12,10 +12,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 export default function ShopSorter() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const currentSort = searchParams.get("sort") || "most-popular";
+    const currentSort = searchParams?.get("sort") || "most-popular";
 
     const handleSortChange = (value: string) => {
-        const params = new URLSearchParams(searchParams.toString());
+        const params = new URLSearchParams(searchParams?.toString() ?? '');
         params.set("sort", value);
         router.push(`?${params.toString()}`);
     };

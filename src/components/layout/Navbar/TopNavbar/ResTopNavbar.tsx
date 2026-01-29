@@ -29,6 +29,7 @@ const ResTopNavbar = ({ data }: { data: NavMenu }) => {
 
   // Check if a nav item is active
   const isActive = (url: string) => {
+    if (!pathname) return false;
     if (url === "/") return pathname === "/";
     return pathname.startsWith(url);
   };

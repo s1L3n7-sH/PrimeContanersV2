@@ -13,7 +13,7 @@ const CategoriesSection = ({ categories = [] }: CategoriesSectionProps) => {
   const searchParams = useSearchParams();
 
   // Get current selected categories from URL
-  const selectedParam = searchParams.get('length');
+  const selectedParam = searchParams?.get('length');
   const selectedCategories = selectedParam ? selectedParam.split(',') : [];
 
   // Use passed categories or fallback to defaults
@@ -22,7 +22,7 @@ const CategoriesSection = ({ categories = [] }: CategoriesSectionProps) => {
     : ["10 ft", "16 ft", "20 ft", "24 ft", "30 ft", "40 ft", "45 ft"];
 
   const toggleCategory = (category: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() ?? '');
     let newSelected: string[];
 
     if (selectedCategories.includes(category)) {
@@ -43,7 +43,7 @@ const CategoriesSection = ({ categories = [] }: CategoriesSectionProps) => {
   };
 
   const clearAll = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() ?? '');
     params.delete('length');
     router.push(`/shop?${params.toString()}`, { scroll: false });
   };
