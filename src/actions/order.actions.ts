@@ -13,7 +13,9 @@ async function sendQuoteEmail(email: string, name: string) {
     }
 
     const transporter = nodemailer.createTransport({
-        service: "gmail",
+        host: process.env.SMTP_HOST || "smtp.gmail.com",
+        port: parseInt(process.env.SMTP_PORT || "587"),
+        secure: process.env.SMTP_SECURE === "true",
         auth: {
             user: process.env.SMTP_EMAIL,
             pass: process.env.SMTP_PASSWORD,
@@ -187,8 +189,8 @@ export async function submitQuoteRequest(formData: FormData, cartItemsJson: stri
             }
         });
 
-        // Send confirmation email
-        await sendQuoteEmail(email, name);
+        // Send confirmation email (non-blocking)
+        sendQuoteEmail(email, name).catch(err => console.error("Email sending failed:", err));
 
     } catch (error) {
         console.error("Failed to submit quote:", error);
@@ -221,8 +223,8 @@ export async function submitGeneralQuote(formData: FormData) {
             }
         });
 
-        // Send confirmation email
-        await sendQuoteEmail(email, name);
+        // Send confirmation email (non-blocking)
+        sendQuoteEmail(email, name).catch(err => console.error("Email sending failed:", err));
 
     } catch (error) {
         console.error("Failed to submit general quote:", error);
