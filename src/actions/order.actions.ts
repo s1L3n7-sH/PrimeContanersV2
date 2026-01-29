@@ -5,19 +5,20 @@ import { revalidatePath } from "next/cache";
 import { OrderStatus } from "@prisma/client";
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD,
-    },
-});
 
 async function sendQuoteEmail(email: string, name: string) {
     if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
         console.warn("SMTP credentials not found in environment variables. Email not sent.");
         return;
     }
+
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.SMTP_EMAIL,
+            pass: process.env.SMTP_PASSWORD,
+        },
+    });
 
     try {
         await transporter.sendMail({
