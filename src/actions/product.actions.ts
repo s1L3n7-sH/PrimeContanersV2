@@ -327,3 +327,26 @@ export async function toggleProductStock(id: number, inStock: boolean) {
         throw new Error("Failed to toggle product stock");
     }
 }
+
+export async function updateProductOrder(orderedProductIds: number[]) {
+    try {
+        // Update each product's displayOrder based on its position in the array
+        await prisma.$transaction(
+            orderedProductIds.map((id, index) =>
+                prisma.product.update({
+                    where: { id },
+                    data: { displayOrder: index },
+                })
+            )
+        );
+
+        revalidatePath("/prime-panel/dashboard/products");
+        revalidatePath("/shop");
+        revalidatePath("/");
+
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to update product order:", error);
+        throw new Error("Failed to update product order");
+    }
+}

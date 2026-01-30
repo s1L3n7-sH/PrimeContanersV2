@@ -75,13 +75,13 @@ export default async function ShopPage({
     }
 
     // Determine Sort Order
-    let orderBy: any = { createdAt: 'desc' }; // Default fallback
+    let orderBy: any = [{ displayOrder: 'asc' }, { createdAt: 'desc' }]; // Default: admin-defined order
 
     if (sortOption === 'newest') {
       orderBy = { createdAt: 'desc' };
     } else if (sortOption === 'most-popular') {
-      // Sort by views (clicks)
-      orderBy = { views: 'desc' };
+      // Use admin-defined display order (default)
+      orderBy = [{ displayOrder: 'asc' }, { createdAt: 'desc' }];
     }
 
     let products;
@@ -184,25 +184,8 @@ export default async function ShopPage({
               ))}
             </div>
 
-            {productList.length > 0 && (
-              <div className="flex justify-center items-center gap-4">
-                {/* Previous Button */}
-                <button className="group px-6 py-2.5 rounded-full border-2 border-gray-200 hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2 bg-white shadow-sm hover:shadow-md">
-                  <svg className="w-4 h-4 text-gray-600 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                  <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">Previous</span>
-                </button>
-
-                {/* Next Button */}
-                <button className="group px-6 py-2.5 rounded-full border-2 border-gray-200 hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2 bg-white shadow-sm hover:shadow-md">
-                  <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">Next</span>
-                  <svg className="w-4 h-4 text-gray-600 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-            )}
+            {/* Pagination - Only show when there are multiple pages */}
+            {/* Currently no server-side pagination is implemented, so hide when all products fit on one view */}
 
             {/* Empty State */}
             {productList.length === 0 && (
