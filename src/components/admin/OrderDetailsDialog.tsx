@@ -27,9 +27,10 @@ interface OrderDetailsDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     currentUserId: number | null;
+    currentUserRole: string | null;
 }
 
-export default function OrderDetailsDialog({ order, open, onOpenChange, currentUserId }: OrderDetailsDialogProps) {
+export default function OrderDetailsDialog({ order, open, onOpenChange, currentUserId, currentUserRole }: OrderDetailsDialogProps) {
     const [isUpdating, setIsUpdating] = useState(false);
     const router = useRouter();
 

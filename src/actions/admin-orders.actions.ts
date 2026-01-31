@@ -104,6 +104,23 @@ export async function assignOrderToMe(orderId: number) {
             return { success: false, error: "User not found" };
         }
 
+        // Fix: Check if order is already assigned to prevent "Lead Stealing"
+        const existingOrder = await prisma.order.findUnique({
+            where: { id: orderId },
+            select: { assignedToUserId: true }
+        });
+
+        if (!existingOrder) {
+            return { success: false, error: "Order not found" };
+        }
+
+        // If order is assigned to someone else, and current user is NOT admin, block it.
+        if (existingOrder.assignedToUserId &&
+            existingOrder.assignedToUserId !== user.id &&
+            user.role !== 'ADMIN') {
+            return { success: false, error: "This order is already assigned to another agent." };
+        }
+
         await prisma.order.update({
             where: { id: orderId },
             data: {
@@ -213,5 +230,40 @@ export async function createFacebookQuote(data: {
     } catch (error) {
         console.error("Failed to create FB quote:", error);
         return { success: false, error: "Failed to create quote" };
+    }
+}
+
+export async function deleteOrder(orderId: number) {
+    try {
+        const cookieStore = cookies();
+        const token = cookieStore.get('admin_session')?.value;
+
+        if (!token) {
+            return { success: false, error: "Not authenticated" };
+        }
+
+        const session = await verifySessionWithDb(token);
+
+        if (!session) {
+            return { success: false, error: "Invalid session" };
+        }
+
+        if (session.role !== 'ADMIN') {
+            return { success: false, error: "Unauthorized. Only admins can delete orders." };
+        }
+
+        await prisma.order.delete({
+            where: { id: orderId }
+        });
+
+        revalidatePath("/prime-panel/dashboard/sales-pipeline/[status]");
+        revalidatePath("/prime-panel/dashboard/orders/[status]");
+        revalidatePath("/prime-panel/dashboard/sales-pipeline", 'layout');
+        revalidatePath("/prime-panel/dashboard/orders", 'layout');
+
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to delete order:", error);
+        return { success: false, error: "Failed to delete order" };
     }
 }

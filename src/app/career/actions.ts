@@ -7,6 +7,7 @@ import { sanitizeFilename, sanitizeInput, validatePDFBuffer } from "@/lib/saniti
 // Import dynamically to avoid bundling issues
 const fs = require("fs/promises");
 const path = require("path");
+const crypto = require("crypto");
 
 export async function submitCareerApplication(formData: FormData) {
     try {
@@ -129,8 +130,11 @@ export async function submitCareerApplication(formData: FormData) {
         }
 
         // Generate safe filename with timestamp
+        // Generate safe filename with timestamp
         const timestamp = Date.now();
-        const randomString = Math.random().toString(36).substring(2, 8);
+        // Use crypto.randomUUID for better entropy than Math.random()
+        const uniqueId = crypto.randomUUID();
+        const randomString = uniqueId.split('-')[0]; // Use part of UUID for brevity but better randomness
         const sanitizedName = sanitizeFilename(resume.name);
 
         // Force .pdf extension for extra safety

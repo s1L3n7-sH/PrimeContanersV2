@@ -5,6 +5,16 @@ import { revalidatePath } from "next/cache";
 import { OrderStatus } from "@prisma/client";
 import sgMail from "@sendgrid/mail";
 
+// Helper to escape HTML characters
+function escapeHtml(unsafe: string): string {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 
 async function sendQuoteEmail(email: string, name: string) {
     console.log(`[EMAIL] Attempting to send quote confirmation email to: ${email}`);
@@ -61,7 +71,7 @@ async function sendQuoteEmail(email: string, name: string) {
                                         
                                         <!-- Greeting -->
                                         <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #475569;">
-                                            Dear ${name},
+                                            Dear ${escapeHtml(name)},
                                         </p>
                                         
                                         <!-- Message -->

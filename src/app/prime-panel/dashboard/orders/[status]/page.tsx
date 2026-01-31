@@ -20,11 +20,13 @@ export default async function OrdersStatusPage({ params }: PageProps) {
     const cookieStore = cookies();
     const token = cookieStore.get('admin_session')?.value;
     let currentUserId: number | null = null;
+    let currentUserRole: string | null = null;
 
     if (token) {
         const session = await verifySessionWithDb(token);
         if (session) {
             currentUserId = session.userId;
+            currentUserRole = session.role;
         }
     }
 
@@ -73,7 +75,7 @@ export default async function OrdersStatusPage({ params }: PageProps) {
                 }))
             };
         });
-        return <OrdersTable orders={orders} currentUserId={currentUserId} />;
+        return <OrdersTable orders={orders} currentUserId={currentUserId} currentUserRole={currentUserRole} />;
     }
 
     const status = statusMap[statusParam];
@@ -122,5 +124,9 @@ export default async function OrdersStatusPage({ params }: PageProps) {
         };
     });
 
-    return <OrdersTable orders={orders} currentUserId={currentUserId} />;
+
+
+
+
+    return <OrdersTable orders={orders} currentUserId={currentUserId} currentUserRole={currentUserRole} />;
 }

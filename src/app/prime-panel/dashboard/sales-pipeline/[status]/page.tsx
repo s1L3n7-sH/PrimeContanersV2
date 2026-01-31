@@ -68,13 +68,15 @@ export default async function SalesPipelineStatusPage({ params }: PageProps) {
     const cookieStore = cookies();
     const token = cookieStore.get('admin_session')?.value;
     let currentUserId: number | null = null;
+    let currentUserRole: string | null = null;
 
     if (token) {
         const session = await verifySessionWithDb(token);
         if (session) {
             currentUserId = session.userId;
+            currentUserRole = session.role;
         }
     }
 
-    return <OrdersTable orders={orders} currentUserId={currentUserId} />;
+    return <OrdersTable orders={orders} currentUserId={currentUserId} currentUserRole={currentUserRole} />;
 }
